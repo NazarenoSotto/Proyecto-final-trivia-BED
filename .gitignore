@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+./Proyecto_trivia_BED/appsettings.json
+./Proyecto_trivia_BED/appsettings.Development.json
+/Proyecto_trivia_BED/appsettings.Development.json
+/Proyecto_trivia_BED/appsettings.json
