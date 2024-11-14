@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Proyecto_trivia_BED
 {
@@ -30,11 +31,13 @@ namespace Proyecto_trivia_BED
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder.AllowAnyOrigin() 
                            .AllowAnyMethod()
                            .AllowAnyHeader();
                 });
             });
+
+            services.AddDbContext<TriviaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
