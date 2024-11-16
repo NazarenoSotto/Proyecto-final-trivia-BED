@@ -19,7 +19,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// Categoría para las preguntas
         /// </summary>
         /// <param name="pNombre">Nombre de la categoría</param>
-        public int IdWeb { get; set; }
+        public int WebId { get; set; }
         /// <summary>
         /// Id de la categoria en su respectiva web
         /// </summary>
@@ -29,16 +29,17 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// </summary>
 
 
-        public ECategoria(string pNombre, int pIdWeb)
+        public ECategoria(string pNombre, int pWebId, PaginasElegiblesEnum externalApi)
         {
             NombreCategoria = pNombre;
-            IdWeb = pIdWeb;
+            WebId = pWebId;
+            externalAPI = externalApi;
         }
 
         public ECategoria(string pNombre)
         {
             NombreCategoria = pNombre;
-            IdWeb = 0;
+            WebId = 0;
         }
         public ECategoria() { }
     }

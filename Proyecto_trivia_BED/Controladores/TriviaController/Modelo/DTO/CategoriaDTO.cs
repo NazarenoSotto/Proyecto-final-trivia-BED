@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO
+namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO
 {
     public class CategoriaDTO
     {
@@ -8,7 +8,7 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO
 
         public string NombreCategoria { get; set; }
 
-        public bool WebId { get; set; }
+        public int WebId { get; set; }
 
     }
 }

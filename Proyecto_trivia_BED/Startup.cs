@@ -42,6 +42,7 @@ namespace Proyecto_trivia_BED
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<CategoriaModelo>();
             services.AddScoped<DificultadModelo>();
+            services.AddScoped<DificultadModelo>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

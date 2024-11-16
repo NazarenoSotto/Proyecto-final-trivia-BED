@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -21,9 +21,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controladores\Trivia\API\DTO\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="Servicios\Trivia\" />
+    <Folder Include="Servicios\Usuario\" />
     <Folder Include="Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Controladores\TriviaController\Modelo\DTO\RespuestaDTO.cs" />
   </ItemGroup>
 
 </Project>
