@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Proyecto_trivia_BED.Controladores.Usuario.Modelo;
+using Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Proyecto_trivia_BED.ContextoDB;
 
 namespace Proyecto_trivia_BED.Controllers
 {
@@ -14,26 +12,39 @@ namespace Proyecto_trivia_BED.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly ILogger<UsuarioController> _logger;
+        private readonly IUsuarioService _usuarioService;
 
-        public UsuarioController(ILogger<UsuarioController> logger)
+        public UsuarioController(ILogger<UsuarioController> logger, IUsuarioService usuarioService)
         {
             _logger = logger;
+            _usuarioService = usuarioService ?? throw new ArgumentNullException(nameof(usuarioService));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> NuevoUsuario()
+
+        [HttpPost("crear")]
+        public IActionResult CrearUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
+            if (usuarioDTO == null)
+            {
+                _logger.LogWarning("Solicitud inválida: el cuerpo está vacío.");
+                return BadRequest("El cuerpo de la solicitud no puede estar vacío.");
+            }
+
             try
             {
-                var dificultades = await _context.Dificultades.ToListAsync();
+                if (_usuarioService.NombreUsuarioExistente(usuarioDTO.NombreUsuario))
+                {
+                    return Conflict("El nombre de usuario ya existe.");
+                }
 
-                return Ok(dificultades);
-            } 
+                var nuevoUsuario = _usuarioService.AgregarUsuario(usuarioDTO);
+                return CreatedAtAction(nameof(CrearUsuario), new { id = nuevoUsuario.IdUsuario }, nuevoUsuario);
+            }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "Hubo un problema al obtener las preguntas.", details = ex.Message });
+                _logger.LogError(ex, "Error al crear el usuario.");
+                return StatusCode(500, "Ocurrió un error inesperado.");
             }
-            
         }
     }
 }

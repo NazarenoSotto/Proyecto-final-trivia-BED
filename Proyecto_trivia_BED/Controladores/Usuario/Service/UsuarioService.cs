@@ -1,10 +1,31 @@
 ﻿using Proyecto_trivia_BED.ContextoDB.Entidad;
 using Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO;
+using System;
 
 namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
 {
-    public class UsuarioModelo : IUsuarioModelo
+    public class UsuarioService : IUsuarioService
     {
+        private readonly UsuarioModelo _usuarioModelo;
+
+        public UsuarioService(UsuarioModelo usuarioModelo)
+        {
+            _usuarioModelo = usuarioModelo ?? throw new ArgumentNullException(nameof(usuarioModelo));
+        }
+
+        public UsuarioDTO AgregarUsuario(UsuarioDTO usuarioDTO)
+        {
+            if (usuarioDTO == null)
+                throw new ArgumentNullException(nameof(usuarioDTO));
+            if (_usuarioModelo.NombreUsuarioExistente(usuarioDTO.NombreUsuario))
+            {
+                throw new InvalidOperationException("El nombre de usuario ya existe.");
+            }
+            var usuarioEntidad = ConvertirAEntidad(usuarioDTO);
+            var usuarioGuardado = _usuarioModelo.AgregarUsuario(usuarioEntidad);
+            return ConvertirADTO(usuarioGuardado);
+        }
+
         public UsuarioDTO ConvertirADTO(EUsuario usuario)
         {
             if (usuario == null) return null;
@@ -17,7 +38,7 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
             };
         }
 
-        public EUsuario ConvertirAEntitidad(UsuarioDTO usuarioDTO)
+        public EUsuario ConvertirAEntidad(UsuarioDTO usuarioDTO)
         {
             if (usuarioDTO == null) return null;
 
@@ -27,6 +48,14 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
                 NombreUsuario = usuarioDTO.NombreUsuario,
                 EsAdmin = usuarioDTO.EsAdmin
             };
+        }
+
+        public bool NombreUsuarioExistente(string nombreUsuario)
+        {
+            if (string.IsNullOrWhiteSpace(nombreUsuario))
+                throw new ArgumentException("El nombre de usuario no puede estar vacío.", nameof(nombreUsuario));
+
+            return _usuarioModelo.NombreUsuarioExistente(nombreUsuario);
         }
     }
 }
