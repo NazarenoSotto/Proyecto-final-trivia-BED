@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controladores\Trivia\API\DTO\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>

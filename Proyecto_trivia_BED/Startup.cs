@@ -37,7 +37,7 @@ namespace Proyecto_trivia_BED
             services.AddDbContext<TriviaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<UsuarioModelo>();
+            services.AddScoped<CategoriaModelo>();
             services.AddScoped<IUsuarioService, UsuarioService>();
 
             services.AddControllers();
