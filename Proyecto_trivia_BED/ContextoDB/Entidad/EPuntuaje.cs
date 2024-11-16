@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_trivia_BED
+namespace Proyecto_trivia_BED.ContextoDB.Entidad
 {
     public class Puntaje
     {
@@ -10,7 +10,7 @@ namespace Proyecto_trivia_BED
 
         public int IdPuntaje { get; set; }
 
-        public Usuario Usuario { get; set; }
+        public EUsuario Usuario { get; set; }
 
         public float ValorPuntaje { get; set; }
 
@@ -18,12 +18,12 @@ namespace Proyecto_trivia_BED
 
         public int Tiempo { get; set; }
 
-        public Puntaje(Usuario pUsuario, float pValor, DateTime pFecha, int pTiempo)
+        public Puntaje(EUsuario pUsuario, float pValor, DateTime pFecha, int pTiempo)
         {
-            this.Usuario = pUsuario;
-            this.ValorPuntaje = pValor;
-            this.Fecha = pFecha;
-            this.Tiempo = pTiempo;
+            Usuario = pUsuario;
+            ValorPuntaje = pValor;
+            Fecha = pFecha;
+            Tiempo = pTiempo;
 
         }
 

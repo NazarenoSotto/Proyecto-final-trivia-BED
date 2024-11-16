@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_trivia_BED
+namespace Proyecto_trivia_BED.ContextoDB.Entidad
 {
-    public class Respuesta
+    public class ERespuesta
     {
         /// <summary>
         /// Identificador de la respuesta
         /// </summary>
         [Key]
         public int IdRespuesta { get; set; }
-        
+
         /// <summary>
         /// String que define la respuesta
         /// </summary>
@@ -26,13 +26,13 @@ namespace Proyecto_trivia_BED
         /// </summary>
         /// <param name="pRespuesta">Texto que define la respuesta</param>
         /// <param name="pCorrecta">Define si es correcta(true) o incorrecta(false)</param>
-        public Respuesta(string pRespuesta, bool pCorrecta)
+        public ERespuesta(string pRespuesta, bool pCorrecta)
         {
-            this.SRespuesta = pRespuesta;
-            this.Correcta = pCorrecta;
+            SRespuesta = pRespuesta;
+            Correcta = pCorrecta;
         }
 
-        public Respuesta() { }
+        public ERespuesta() { }
 
     }
 }
