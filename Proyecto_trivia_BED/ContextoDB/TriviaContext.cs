@@ -20,9 +20,9 @@ namespace Proyecto_trivia_BED.ContextoDB
 
             // Ejemplo de seed data para la entidad `Pregunta`
             modelBuilder.Entity<EDificultad>().HasData(
-                new EDificultad { IdDificultad = 1, NombreDificultad = "easy", Valor = 1 },
-                new EDificultad { IdDificultad = 2, NombreDificultad = "medium", Valor = 3 },
-                new EDificultad { IdDificultad = 3, NombreDificultad = "hard", Valor = 5 }
+                new EDificultad { IdDificultad = 1, NombreDificultad = "easy", Valor = 1, webId = 1, externalAPI = PaginasElegiblesEnum.OpenTDB },
+                new EDificultad { IdDificultad = 2, NombreDificultad = "medium", Valor = 3, webId = 3, externalAPI = PaginasElegiblesEnum.OpenTDB },
+                new EDificultad { IdDificultad = 3, NombreDificultad = "hard", Valor = 5, webId = 5, externalAPI = PaginasElegiblesEnum.OpenTDB }
             );
 
         }
