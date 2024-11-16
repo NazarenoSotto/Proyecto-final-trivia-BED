@@ -28,9 +28,15 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
             _context.SaveChanges();
             return usuario;
         }
+
         public EUsuario ObtenerUsuarioPorNombre(string nombreUsuario)
         {
             return _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == nombreUsuario);
+        }
+
+        public EUsuario ObtenerUsuarioPorId(int idUsuario)
+        {
+            return _context.Usuarios.Find(idUsuario);
         }
     }
 }

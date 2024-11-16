@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Proyecto_trivia_BED.ContextoDB.Entidad
 {
-    public class Puntaje
+    public class EPuntaje
     {
         [Key]
 
@@ -18,7 +18,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
 
         public int Tiempo { get; set; }
 
-        public Puntaje(EUsuario pUsuario, float pValor, DateTime pFecha, int pTiempo)
+        public EPuntaje(EUsuario pUsuario, float pValor, DateTime pFecha, int pTiempo)
         {
             Usuario = pUsuario;
             ValorPuntaje = pValor;
@@ -27,6 +27,6 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
 
         }
 
-        public Puntaje() { }
+        public EPuntaje() { }
     }
 }

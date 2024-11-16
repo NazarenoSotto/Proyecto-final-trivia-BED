@@ -12,7 +12,7 @@ namespace Proyecto_trivia_BED.ContextoDB
         public DbSet<ECategoria> Categorias { get; set; }
         public DbSet<EDificultad> Dificultades { get; set; }
         public DbSet<EUsuario> Usuarios { get; set; }
-        public DbSet<Puntaje> Puntajes { get; set; }
+        public DbSet<EPuntaje> Puntajes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
