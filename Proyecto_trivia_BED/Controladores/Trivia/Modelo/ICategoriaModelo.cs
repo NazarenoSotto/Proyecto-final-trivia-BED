@@ -3,17 +3,13 @@ using Proyecto_trivia_BED.ContextoDB.Entidad;
 using System;
 using System.Linq;
 
-namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
+namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
 {
-    public class ICategoriaModelo
+    public interface ICategoriaModelo
     {
-        private readonly TriviaContext _context;
+        public bool CategoriaExistente(string nombreCategoria);
 
-        public ICategoriaModelo(TriviaContext context)
-        {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-
+        public ECategoria AgregarCategoria(ECategoria categoria);
+        public ECategoria obtenerCategoriaPorIdExterna(int categoriaWebId, PaginasElegiblesEnum externalWeb);
     }
 }

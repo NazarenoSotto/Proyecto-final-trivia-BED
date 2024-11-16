@@ -22,7 +22,7 @@ namespace Proyecto_trivia_BED.Controllers
 
 
         [HttpPost("crear")]
-        public IActionResult CrearUsuario([FromBody] CategoriaDTO usuarioDTO)
+        public IActionResult CrearUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
             if (usuarioDTO == null)
             {

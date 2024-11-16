@@ -20,20 +20,20 @@ namespace Proyecto_trivia_BED.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> NuevoUsuario()
-        {
-            try
-            {
-                var dificultades = await _context.Dificultades.ToListAsync();
+        //[HttpGet]
+        //public async Task<IActionResult> NuevoUsuario()
+        //{
+        //    try
+        //    {
+        //        var dificultades = await _context.Usuarios.ToListAsync();
 
-                return Ok(dificultades);
-            } 
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Hubo un problema al obtener las preguntas.", details = ex.Message });
-            }
+        //        return Ok(dificultades);
+        //    } 
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, new { message = "Hubo un problema al obtener las preguntas.", details = ex.Message });
+        //    }
             
-        }
+        //}
     }
 }

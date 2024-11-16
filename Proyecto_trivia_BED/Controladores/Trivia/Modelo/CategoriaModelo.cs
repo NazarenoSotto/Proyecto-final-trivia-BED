@@ -3,9 +3,9 @@ using Proyecto_trivia_BED.ContextoDB.Entidad;
 using System;
 using System.Linq;
 
-namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
+namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
 {
-    public class CategoriaModelo
+    public class CategoriaModelo: ICategoriaModelo
     {
         private readonly TriviaContext _context;
 
@@ -29,9 +29,9 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
             return categoria;
         }
 
-        public ECategoria obtenerCategoriaPorId(int categoriaId)
+        public ECategoria obtenerCategoriaPorIdExterna(int categoriaWebId, PaginasElegiblesEnum externalWeb)
         {
-            return _context.Categorias.FirstOrDefault(cat => cat.IdCategoria == categoriaId);
+            return _context.Categorias.FirstOrDefault(cat => cat.IdWeb == categoriaWebId && cat.externalAPI == externalWeb);
         }
 
     }

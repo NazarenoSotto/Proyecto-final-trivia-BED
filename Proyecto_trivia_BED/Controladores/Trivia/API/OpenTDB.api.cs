@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Proyecto_trivia_BED.ContextoDB.Entidad;
+using Proyecto_trivia_BED.Controladores.Trivia.Modelo;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,10 +17,13 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
     public class OpenTDBAPI
     {
         private static HttpClient httpClient;
-        public OpenTDBAPI(IConfiguration configuration)
+        private readonly CategoriaModelo _categoriaModelo;
+
+        public OpenTDBAPI(IConfiguration configuration, CategoriaModelo categoriaModelo)
         {
             httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(configuration.GetValue<string>("externalApiUrl:OpenTDBUrl"));
+            _categoriaModelo = categoriaModelo;
         }
 
         private static string GenerarUrl(int pCantidad, int? pCategoriaId, int? pDificultadId)
@@ -32,6 +36,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
             // Agregar "category" si se proporciona un valor
             if (pCategoriaId.HasValue)
             {
+                
                 parametros.Add($"category={pCategoriaId.Value}");
             }
 
@@ -45,40 +50,42 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
             return $"{baseUrl}{string.Join("&", parametros)}";
         }
 
-        private async static List<EPregunta> ObtenerPreguntas(int pCantidad, int? pCategoriaId, int? pDificultadId)
-        {
-            string requestUrl = GenerarUrl(pCantidad, pCategoriaId, pDificultadId);
-            HttpWebRequest mRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
+        //private async static List<EPregunta> ObtenerPreguntas(int pCantidad, int? pCategoriaId, int? pDificultadId)
+        //{
+        //    string requestUrl = GenerarUrl(pCantidad, pCategoriaId, pDificultadId);
+        //    HttpWebRequest mRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
 
-            WebResponse mResponse = mRequest.GetResponse();
-            List<EPregunta> lPreguntas = new List<EPregunta>();
-            // Se obtiene los datos de respuesta
-            using (Stream responseStream = mResponse.GetResponseStream())
-            {
-                StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
+        //    WebResponse mResponse = mRequest.GetResponse();
+        //    List<EPregunta> lPreguntas = new List<EPregunta>();
+        //    // Se obtiene los datos de respuesta
+        //    using (Stream responseStream = mResponse.GetResponseStream())
+        //    {
+        //        StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
 
-                // Se parsea la respuesta y se serializa a JSON a un objeto dynamic
-                dynamic mResponseJSON = JsonConvert.DeserializeObject(reader.ReadToEnd());
+        //        // Se parsea la respuesta y se serializa a JSON a un objeto dynamic
+        //        dynamic mResponseJSON = JsonConvert.DeserializeObject(reader.ReadToEnd());
 
-                foreach (var bResponseItem in mResponseJSON.results)
-                {
-                    String mLaPregunta = HttpUtility.HtmlDecode(bResponseItem.question.ToString());
-                    List<ERespuesta> lRespuestas = new List<ERespuesta>();
+        //        foreach (var bResponseItem in mResponseJSON.results)
+        //        {
+        //            String mLaPregunta = HttpUtility.HtmlDecode(bResponseItem.question.ToString());
+        //            List<ERespuesta> lRespuestas = new List<ERespuesta>();
 
-                    ERespuesta mRespCorrecta = new ERespuesta(HttpUtility.HtmlDecode(bResponseItem.correct_answer.ToString()), true);
-                    lRespuestas.Add(mRespCorrecta);
-                    foreach (var bRespInc in bResponseItem.incorrect_answers)
-                    {
-                        lRespuestas.Add(new ERespuesta(HttpUtility.HtmlDecode(bRespInc.ToString()), false));
-                    }
+        //            ERespuesta mRespCorrecta = new ERespuesta(HttpUtility.HtmlDecode(bResponseItem.correct_answer.ToString()), true);
+        //            lRespuestas.Add(mRespCorrecta);
+        //            foreach (var bRespInc in bResponseItem.incorrect_answers)
+        //            {
+        //                lRespuestas.Add(new ERespuesta(HttpUtility.HtmlDecode(bRespInc.ToString()), false));
+        //            }
 
-                    EPregunta mPregunta = new EPregunta(mLaPregunta, pCategoriaId, pDificultadId, lRespuestas);
-                    lPreguntas.Add(mPregunta);
-                }
+        //           // ECategoria categoriaPregunta = _categoriaModelo.obtenerCategoriaPorIdExterna()
 
-                return lPreguntas;
-            }
-        }
+        //            EPregunta mPregunta = new EPregunta(mLaPregunta, pCategoriaId, pDificultadId, lRespuestas);
+        //            lPreguntas.Add(mPregunta);
+        //        }
+
+        //        return lPreguntas;
+        //    }
+        //}
 
 
     }

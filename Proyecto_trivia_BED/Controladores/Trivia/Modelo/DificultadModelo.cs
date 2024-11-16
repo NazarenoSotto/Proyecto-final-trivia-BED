@@ -3,7 +3,7 @@ using Proyecto_trivia_BED.ContextoDB.Entidad;
 using System;
 using System.Linq;
 
-namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
+namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
 {
     public class DificultadModelo
     {

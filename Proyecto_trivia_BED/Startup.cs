@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_trivia_BED.ContextoDB;
 using Proyecto_trivia_BED.Controladores.Usuario.Modelo;
+using Proyecto_trivia_BED.Controladores.Trivia.Modelo;
 
 namespace Proyecto_trivia_BED
 {
@@ -37,8 +38,10 @@ namespace Proyecto_trivia_BED
             services.AddDbContext<TriviaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<CategoriaModelo>();
+            services.AddScoped<UsuarioModelo>();
             services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<CategoriaModelo>();
+            services.AddScoped<DificultadModelo>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
