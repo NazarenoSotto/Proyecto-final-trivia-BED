@@ -38,11 +38,38 @@ namespace Proyecto_trivia_BED.Controllers
                 }
 
                 var nuevoUsuario = _usuarioService.AgregarUsuario(usuarioDTO);
-                return CreatedAtAction(nameof(CrearUsuario), new { id = nuevoUsuario.IdUsuario }, nuevoUsuario);
+                return Ok(nuevoUsuario);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al crear el usuario.");
+                return StatusCode(500, "Ocurrió un error inesperado.");
+            }
+        }
+
+        [HttpPost("autenticar")]
+        public IActionResult AutenticarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        {
+            if (usuarioDTO == null || string.IsNullOrWhiteSpace(usuarioDTO.NombreUsuario) || string.IsNullOrWhiteSpace(usuarioDTO.Password))
+            {
+                _logger.LogWarning("Solicitud de inicio de sesión inválida.");
+                return BadRequest("Nombre de usuario y contraseña son obligatorios.");
+            }
+
+            try
+            {
+                var usuario = _usuarioService.ObtenerUsuarioPorNombre(usuarioDTO.NombreUsuario);
+
+                if (usuario == null || !_usuarioService.VerificarPassword(usuarioDTO.Password, usuario.Password))
+                {
+                    return Unauthorized("Nombre de usuario o contraseña incorrectos.");
+                }
+
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al autenticar el usuario.");
                 return StatusCode(500, "Ocurrió un error inesperado.");
             }
         }
