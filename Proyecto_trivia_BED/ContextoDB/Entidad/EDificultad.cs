@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_trivia_BED
+namespace Proyecto_trivia_BED.ContextoDB.Entidad
 {
-    public class Dificultad
+    public class EDificultad
     {
         /// <summary>
         /// Identificador de la dificultad
@@ -24,12 +24,12 @@ namespace Proyecto_trivia_BED
         /// </summary>
         /// <param name="pNombre">Nombre de la dificultad</param>
         /// <param name="pValor">Valor de la dificultad en puntos</param>
-        public Dificultad (string pNombre, int pValor)
+        public EDificultad(string pNombre, int pValor)
         {
-            this.NombreDificultad = pNombre;
-            this.Valor = pValor;
+            NombreDificultad = pNombre;
+            Valor = pValor;
         }
 
-        public Dificultad() { }
+        public EDificultad() { }
     }
 }

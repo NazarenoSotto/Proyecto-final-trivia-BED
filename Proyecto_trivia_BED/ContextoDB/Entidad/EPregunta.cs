@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_trivia_BED
+namespace Proyecto_trivia_BED.ContextoDB.Entidad
 {
     /// <summary>
     /// Pregunta
     /// </summary>
-    public class Pregunta
+    public class EPregunta
     {
         //private int iIdPregunta;
         //private string iLaPregunta;
@@ -25,15 +25,15 @@ namespace Proyecto_trivia_BED
         /// <summary>
         /// Categoría a la que pertenece la pregunta
         /// </summary>
-        public Categoria Categoria { get; set; }
+        public ECategoria Categoria { get; set; }
         /// <summary>
         /// Dificultad de la pregunta
         /// </summary>
-        public Dificultad Dificultad { get; set; }
+        public EDificultad Dificultad { get; set; }
         /// <summary>
         /// Respuestas incorrectas
         /// </summary>
-        public IList<Respuesta> Respuestas { get; set; }
+        public IList<ERespuesta> Respuestas { get; set; }
 
         /// <summary>
         /// Una pregunta
@@ -43,14 +43,14 @@ namespace Proyecto_trivia_BED
         /// <param name="pDif">Dificultad de la pregunta</param>
         /// <param name="pRespIncorrectas">Lista de respuestas incorrectas</param>
         /// <param name="pRespCorrecta">La respuesta correcta</param>
-        public Pregunta(string pPregunta, Categoria pCategoria, Dificultad pDif, IList<Respuesta> pRespuestas)
-            {
-            this.LaPregunta = pPregunta;
-            this.Categoria = pCategoria;
-            this.Dificultad = pDif;
-            this.Respuestas = pRespuestas;
-            }
+        public EPregunta(string pPregunta, ECategoria pCategoria, EDificultad pDif, IList<ERespuesta> pRespuestas)
+        {
+            LaPregunta = pPregunta;
+            Categoria = pCategoria;
+            Dificultad = pDif;
+            Respuestas = pRespuestas;
+        }
 
-        public Pregunta() { }
+        public EPregunta() { }
     }
 }
