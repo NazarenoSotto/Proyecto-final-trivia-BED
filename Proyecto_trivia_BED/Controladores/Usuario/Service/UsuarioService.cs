@@ -17,12 +17,15 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         {
             if (usuarioDTO == null)
                 throw new ArgumentNullException(nameof(usuarioDTO));
+
             if (_usuarioModelo.NombreUsuarioExistente(usuarioDTO.NombreUsuario))
-            {
                 throw new InvalidOperationException("El nombre de usuario ya existe.");
-            }
+
+            usuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
+
             var usuarioEntidad = ConvertirAEntidad(usuarioDTO);
             var usuarioGuardado = _usuarioModelo.AgregarUsuario(usuarioEntidad);
+
             return ConvertirADTO(usuarioGuardado);
         }
 
@@ -34,7 +37,8 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
             {
                 IdUsuario = usuario.IdUsuario,
                 NombreUsuario = usuario.NombreUsuario,
-                EsAdmin = usuario.EsAdmin
+                EsAdmin = usuario.EsAdmin,
+                Password = usuario.Password
             };
         }
 
@@ -46,7 +50,8 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
             {
                 IdUsuario = usuarioDTO.IdUsuario,
                 NombreUsuario = usuarioDTO.NombreUsuario,
-                EsAdmin = usuarioDTO.EsAdmin
+                EsAdmin = usuarioDTO.EsAdmin,
+                Password = usuarioDTO.Password
             };
         }
 
@@ -56,6 +61,15 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
                 throw new ArgumentException("El nombre de usuario no puede estar vacío.", nameof(nombreUsuario));
 
             return _usuarioModelo.NombreUsuarioExistente(nombreUsuario);
+        }
+
+        public EUsuario ObtenerUsuarioPorNombre(string nombreUsuario)
+        {
+            return _usuarioModelo.ObtenerUsuarioPorNombre(nombreUsuario);
+        }
+        public bool VerificarPassword(string passwordIngresada, string passwordAlmacenada)
+        {
+            return BCrypt.Net.BCrypt.Verify(passwordIngresada, passwordAlmacenada);
         }
     }
 }

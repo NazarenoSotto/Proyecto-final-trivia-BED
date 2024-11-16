@@ -10,7 +10,9 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO
         [StringLength(50, ErrorMessage = "El nombre de usuario no puede tener más de 50 caracteres")]
         public string NombreUsuario { get; set; }
 
-        public bool EsAdmin { get; set; }
+        [Required(ErrorMessage = "La contraseña es obligatoria")]
+        public string Password { get; set; }
 
+        public bool EsAdmin { get; set; }
     }
 }

@@ -9,5 +9,7 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         EUsuario ConvertirAEntidad(UsuarioDTO usuarioDTO);
         UsuarioDTO AgregarUsuario(UsuarioDTO usuarioDTO);
         bool NombreUsuarioExistente(string nombreUsuario);
+        EUsuario ObtenerUsuarioPorNombre(string nombreUsuario);
+        bool VerificarPassword(string passwordIngresada, string passwordAlmacenada);
     }
 }
