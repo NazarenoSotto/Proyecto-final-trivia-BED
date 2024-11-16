@@ -12,5 +12,10 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO
         /// </summary>
         public string TextoRespuesta { get; set; }
 
+        /// <summary>
+        /// booleano que define si es la respuesta correcta
+        /// </summary>
+        public bool Correcta { get; set; }
+
     }
 }

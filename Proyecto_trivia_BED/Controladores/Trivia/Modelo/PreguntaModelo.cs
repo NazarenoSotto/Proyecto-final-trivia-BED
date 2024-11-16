@@ -42,5 +42,20 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
                 throw;
             }
         }
+
+        public List<EPregunta> ObtenerPreguntas(int categoriaId, int dificultadId, int cantidad)
+        {
+            return _context.Preguntas
+                .Where(p => p.Categoria.IdCategoria == categoriaId &&
+                            p.Dificultad.IdDificultad == dificultadId)
+                .Take(cantidad)
+                .ToList();
+        }
+
+        public void GuardarPreguntaManual(EPregunta pregunta)
+        {
+            _context.Preguntas.Add(pregunta);
+            _context.SaveChanges();
+        }
     }
 }

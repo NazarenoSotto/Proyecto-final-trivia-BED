@@ -2,6 +2,7 @@
 using Proyecto_trivia_BED.ContextoDB;
 using Proyecto_trivia_BED.ContextoDB.Entidad;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,6 +40,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         public async Task<ECategoria> obtenerCategoriaPorIdAsync(int categoriaId)
         {
             return await _context.Categorias.FirstOrDefaultAsync(cat => cat.IdCategoria == categoriaId);
+        }
+
+        public List<ECategoria> ObtenerCategorias()
+        {
+            return _context.Categorias.ToList();
         }
 
     }

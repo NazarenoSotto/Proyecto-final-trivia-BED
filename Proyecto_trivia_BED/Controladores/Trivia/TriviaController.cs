@@ -42,5 +42,33 @@ namespace Proyecto_trivia_BED.Controllers
             }
 
         }
+
+        [HttpGet("obtenerCategorias")]
+        public IActionResult ObtenerCategorias()
+        {
+            try
+            {
+                var categorias = _triviaService.ObtenerCategorias();
+                return Ok(categorias);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener categorías: {ex.Message}");
+            }
+        }
+
+        [HttpGet("obtenerDificultades")]
+        public IActionResult ObtenerDificultades()
+        {
+            try
+            {
+                var dificultades = _triviaService.ObtenerDificultades();
+                return Ok(dificultades);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener dificultades: {ex.Message}");
+            }
+        }
     }
 }
