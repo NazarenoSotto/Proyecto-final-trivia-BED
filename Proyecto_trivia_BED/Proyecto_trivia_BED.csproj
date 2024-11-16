@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controladores\Dificultad\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>
