@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_trivia_BED.ContextoDB.Entidad
+namespace Proyecto_trivia_BED
 {
-    public class ECategoria
+    public class Categoria
     {
         /// <summary>
         /// Identificador de la categoría
@@ -20,17 +20,17 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// </summary>
         /// <param name="pNombre">Nombre de la categoría</param>
         public int IdWeb { get; set; }
-        public ECategoria(string pNombre, int pIdWeb)
+        public Categoria(string pNombre, int pIdWeb)
         {
-            NombreCategoria = pNombre;
-            IdWeb = pIdWeb;
+            this.NombreCategoria = pNombre;
+            this.IdWeb = pIdWeb;
         }
 
-        public ECategoria(string pNombre)
+        public Categoria(string pNombre)
         {
-            NombreCategoria = pNombre;
-            IdWeb = 0;
+            this.NombreCategoria = pNombre;
+            this.IdWeb = 0;
         }
-        public ECategoria() { }
+        public Categoria() { }
     }
 }
