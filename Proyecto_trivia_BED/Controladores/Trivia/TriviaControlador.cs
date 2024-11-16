@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_trivia_BED.ContextoDB;
+using System.Data.Entity;
 
 namespace Proyecto_trivia_BED.Controllers
 {
@@ -15,9 +16,11 @@ namespace Proyecto_trivia_BED.Controllers
     {
         private readonly ILogger<TriviaControlador> _logger;
 
-        public TriviaControlador(ILogger<TriviaControlador> logger)
+        private readonly TriviaContext _context;
+        public TriviaControlador(ILogger<TriviaControlador> logger, TriviaContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet]

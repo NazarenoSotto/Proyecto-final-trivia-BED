@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proyecto_trivia_BED;
+using Proyecto_trivia_BED.ContextoDB;
 
 namespace Proyecto_trivia_BED.Migrations
 {
