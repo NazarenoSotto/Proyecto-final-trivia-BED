@@ -7,12 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_trivia_BED.ContextoDB;
+using Proyecto_trivia_BED.Controladores.Usuario.Modelo;
 
 namespace Proyecto_trivia_BED
 {
@@ -25,20 +22,23 @@ namespace Proyecto_trivia_BED
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
-                    builder.AllowAnyOrigin() 
+                    builder.AllowAnyOrigin()
                            .AllowAnyMethod()
                            .AllowAnyHeader();
                 });
             });
 
-            services.AddDbContext<TriviaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<TriviaContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<UsuarioModelo>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -47,7 +47,6 @@ namespace Proyecto_trivia_BED
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -57,7 +56,7 @@ namespace Proyecto_trivia_BED
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Proyecto_trivia_BED v1"));
             }
 
-            app.UseCors("FrontendPolicy");
+            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
 
