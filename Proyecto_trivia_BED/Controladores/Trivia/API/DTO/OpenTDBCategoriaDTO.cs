@@ -9,14 +9,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API.DTO
 {
     public class OpenTDBCategoriaResponseDTO
     {
-        [JsonProperty("trivia_categories")]
-        public List<OpenTDBCategoriaDTO> TriviaCategories { get; set; }
+        public List<OpenTDBCategoriaDTO> trivia_categories{ get; set; }
         public class OpenTDBCategoriaDTO
         {
-            [JsonProperty("id")]
-            public int Id { get; set; }
-            [JsonProperty("name")]
-            public string Name { get; set; }
+            public int id { get; set; }
+            public string name { get; set; }
         }
     }
 }

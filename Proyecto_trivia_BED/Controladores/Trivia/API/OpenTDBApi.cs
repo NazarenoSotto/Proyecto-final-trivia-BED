@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using static Proyecto_trivia_BED.Controladores.Trivia.API.DTO.OpenTDBCategoriaResponseDTO;
+using static Proyecto_trivia_BED.Controladores.Trivia.API.DTO.OpenTDBResponseDTO;
 
 namespace Proyecto_trivia_BED.Controladores.Trivia.API
 {
@@ -42,14 +43,25 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
             if (pCategoriaId.HasValue)
             {
                 ECategoria categoria = await _categoriaModelo.obtenerCategoriaPorIdAsync((int)pCategoriaId);
-                parametros.Add($"category={categoria.WebId}");
+                if (categoria != null) { 
+                    parametros.Add($"category={categoria.WebId}");
+                } else
+                {
+                    throw new ArgumentException("No se encontró la categoría requerida");
+                }
             }
 
             // Agregar "difficulty" si se proporciona un valor
             if (pDificultadId.HasValue)
             {
                 EDificultad dificultad = await _dificultadModelo.obtenerDificultadPorId((int)pDificultadId);
-                parametros.Add($"difficulty={dificultad.webId}");
+                if (dificultad != null) {
+                    parametros.Add($"difficulty={dificultad.NombreDificultad}");
+                }
+                else
+                {
+                    throw new ArgumentException("No se encontró la dificultad requerida");
+                }
             }
 
             // Combinar la base de la URL con los parámetros usando '&' como separador
@@ -59,8 +71,6 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
         public async Task<List<ECategoria>> ObtenerCategoriasAsync()
         {
             string baseEndpoint = "/api_category.php";
-            string fullUrl = new Uri(_httpClient.BaseAddress, baseEndpoint).ToString();
-            Console.WriteLine($"URL generada: {fullUrl}");
 
             List<ECategoria> entityCategorias = new List<ECategoria>();
             try
@@ -72,19 +82,15 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"responseContent: {responseContent}");
                     // Deserializar el contenido JSON en un objeto dynamic
                     OpenTDBCategoriaResponseDTO mResponseJSON = JsonConvert.DeserializeObject<OpenTDBCategoriaResponseDTO>(responseContent);
-                    Console.WriteLine($"responseContent: {mResponseJSON.TriviaCategories.Count} categories found");
 
-                    entityCategorias = mResponseJSON.TriviaCategories.Select(c => new ECategoria
+                    entityCategorias = mResponseJSON.trivia_categories.Select(c => new ECategoria
                     (
-                        c.Name,
-                        c.Id,
+                        c.name,
+                        c.id,
                         PaginasElegiblesEnum.OpenTDB
                     )).ToList();
-
-                    Console.WriteLine($"entityCategorias: {entityCategorias.Count}");
                 }
 
                 return entityCategorias;
@@ -99,10 +105,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
         {
             string requestUrl = await GenerarUrlAsync(pCantidad, pCategoriaId, pDificultadId);
 
+            string fullUrl = new Uri(_httpClient.BaseAddress, requestUrl).ToString();
+
+            // Registrar la URL generada
             try {
-
                 List<EPregunta> lPreguntas = new List<EPregunta>();
-
 
                 // Se obtiene los datos de respuesta
                     HttpResponseMessage response = await _httpClient.GetAsync(requestUrl);
@@ -112,9 +119,9 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
                     string responseContent = await response.Content.ReadAsStringAsync();
 
                     // Deserializar el contenido JSON en un objeto dynamic
-                    dynamic mResponseJSON = JsonConvert.DeserializeObject(responseContent);
+                    OpenTDBResponseDTO mResponseJSON = JsonConvert.DeserializeObject<OpenTDBResponseDTO>(responseContent);
 
-                    foreach (OpenTDBResponseDTO bResponseItem in mResponseJSON.results)
+                    foreach (OpenTDBResponseQuestionDTO bResponseItem in mResponseJSON.results)
                     {
                         String mLaPregunta = HttpUtility.HtmlDecode(bResponseItem.question.ToString());
                         List<ERespuesta> lRespuestas = new List<ERespuesta>();
