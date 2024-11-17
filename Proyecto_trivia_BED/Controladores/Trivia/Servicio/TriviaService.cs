@@ -124,9 +124,9 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             return preguntas.Select(pregunta => mapearPreguntaEntidadADTO(pregunta)).ToList();
         }
 
-        public List<CategoriaDTO> ObtenerCategorias()
+        public async Task<List<CategoriaDTO>> ObtenerCategorias(PaginasElegiblesEnum api)
         {
-            var categorias = _categoriaModelo.ObtenerCategorias();
+            var categorias = await _categoriaModelo.ObtenerCategoriasAsync(api);
             return categorias.Select(c => new CategoriaDTO
             {
                 IdCategoria = c.IdCategoria,
@@ -134,9 +134,9 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             }).ToList();
         }
 
-        public List<DificultadDTO> ObtenerDificultades()
+        public async Task<List<DificultadDTO>> ObtenerDificultades(PaginasElegiblesEnum api)
         {
-            var dificultades = _dificultadModelo.ObtenerDificultades();
+            var dificultades = await _dificultadModelo.ObtenerDificultadesAsync(api);
             return dificultades.Select(d => new DificultadDTO
             {
                 IdDificultad = d.IdDificultad,

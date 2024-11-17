@@ -42,9 +42,9 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
             return await _context.Categorias.FirstOrDefaultAsync(cat => cat.IdCategoria == categoriaId);
         }
 
-        public List<ECategoria> ObtenerCategorias()
+        public async Task<List<ECategoria>> ObtenerCategoriasAsync(PaginasElegiblesEnum api)
         {
-            return _context.Categorias.ToList();
+            return await _context.Categorias.Where(c => c.externalAPI == api).ToListAsync();
         }
 
         public async Task<List<ECategoria>> GuardarCategoriasAsync(List<ECategoria> categorias)

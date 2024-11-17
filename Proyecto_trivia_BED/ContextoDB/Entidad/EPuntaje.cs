@@ -24,7 +24,6 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
             ValorPuntaje = pValor;
             Fecha = pFecha;
             Tiempo = pTiempo;
-
         }
 
         public EPuntaje() { }

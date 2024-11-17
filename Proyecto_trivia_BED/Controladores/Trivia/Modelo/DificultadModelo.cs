@@ -27,9 +27,9 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
             return await _context.Dificultades.FirstOrDefaultAsync(dif => dif.IdDificultad == dificultadId);
         }
 
-        public List<EDificultad> ObtenerDificultades()
+        public async Task<List<EDificultad>> ObtenerDificultadesAsync(PaginasElegiblesEnum api)
         {
-            return _context.Dificultades.ToList();
+            return await _context.Dificultades.Where(d => d.externalAPI == api).ToListAsync();
         }
     }
 }

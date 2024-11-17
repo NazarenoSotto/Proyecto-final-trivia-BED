@@ -45,11 +45,11 @@ namespace Proyecto_trivia_BED.Controllers
         }
 
         [HttpGet("obtenerCategorias")]
-        public IActionResult ObtenerCategorias()
+        public async Task<IActionResult> ObtenerCategorias()
         {
             try
             {
-                var categorias = _triviaService.ObtenerCategorias();
+                var categorias = await _triviaService.ObtenerCategorias(PaginasElegiblesEnum.OpenTDB);
                 return Ok(categorias);
             }
             catch (Exception ex)
@@ -59,11 +59,11 @@ namespace Proyecto_trivia_BED.Controllers
         }
 
         [HttpGet("obtenerDificultades")]
-        public IActionResult ObtenerDificultades()
+        public async Task<IActionResult> ObtenerDificultades()
         {
             try
             {
-                var dificultades = _triviaService.ObtenerDificultades();
+                var dificultades = await _triviaService.ObtenerDificultades(PaginasElegiblesEnum.OpenTDB);
                 return Ok(dificultades);
             }
             catch (Exception ex)
