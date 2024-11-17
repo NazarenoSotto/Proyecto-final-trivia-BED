@@ -64,6 +64,8 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
                 }
             }
 
+            parametros.Add("type=multiple");
+
             // Combinar la base de la URL con los parámetros usando '&' como separador
             return $"{baseEndpoint}{string.Join("&", parametros)}";
         }
