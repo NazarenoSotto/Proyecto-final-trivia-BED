@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO;
 using Proyecto_trivia_BED.Controladores.Puntaje.Servicio;
@@ -36,11 +37,11 @@ namespace Proyecto_trivia_BED.Controllers
         }
 
         [HttpGet("obtener")]
-        public IActionResult ObtenerPuntajes()
+        public async Task<IActionResult> ObtenerPuntajes()
         {
             try
             {
-                var puntajes = _puntajeService.ObtenerTodosLosPuntajes();
+                var puntajes = await _puntajeService.ObtenerTodosLosPuntajes();
                 return Ok(puntajes);
             }
             catch (Exception ex)
