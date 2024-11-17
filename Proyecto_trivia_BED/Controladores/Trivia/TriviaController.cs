@@ -72,6 +72,34 @@ namespace Proyecto_trivia_BED.Controllers
             }
         }
 
+        [HttpGet("obtenerPreguntas")]
+        public async Task<IActionResult> ObtenerPreguntas([FromQuery] int cantidad, [FromQuery] int categoriaId, [FromQuery] int dificultadId)
+        {
+            try
+            {
+                var preguntas = await _triviaService.ObtenerPreguntas(new PreguntaRequestDTO{ Cantidad = cantidad, CategoriaId = categoriaId, DificultadId = dificultadId});
+                return Ok(preguntas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener preguntas: {ex.Message}");
+            }
+        }
+
+        //[HttpPost("procesarRespuestas")]
+        //public IActionResult ProcesarRespuestas([FromQuery] int cantidad, [FromQuery] int categoriaId, [FromQuery] int dificultadId)
+        //{
+        //    try
+        //    {
+        //        var preguntas = _triviaService.ObtenerPreguntas(new PreguntaRequestDTO { Cantidad = cantidad, CategoriaId = categoriaId, DificultadId = dificultadId });
+        //        return Ok(preguntas);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, $"Error al obtener preguntas: {ex.Message}");
+        //    }
+        //}
+
         [HttpPost("obtenerCategoriasDesdeAPI")]
         public async Task<IActionResult> ObtenerCategoriasDesdeAPI([FromBody] ObtenerCategoriasDesdeAPIRequestDTO requestBody)
         {

@@ -43,18 +43,22 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
             }
         }
 
-        public List<EPregunta> ObtenerPreguntas(int categoriaId, int dificultadId, int cantidad)
+        public async Task<List<EPregunta>> ObtenerPreguntas(int categoriaId, int dificultadId, int cantidad)
         {
-            return _context.Preguntas
+            return await _context.Preguntas
                 .Where(p => p.Categoria.IdCategoria == categoriaId &&
                             p.Dificultad.IdDificultad == dificultadId)
+                .OrderBy(p => Guid.NewGuid()) // Aleatorizar las preguntas generando un nuevo campo que termina mezclando los registros
                 .Take(cantidad)
-                .ToList();
+                .Include(p => p.Categoria) // Asegúrate de cargar la categoría
+                .Include(p => p.Dificultad) // Asegúrate de cargar la dificultad
+                .Include(p => p.Respuestas) // Asegúrate de cargar las respuestas
+                .ToListAsync();
         }
 
         public void GuardarPreguntaManual(EPregunta pregunta)
         {
-            _context.Preguntas.Add(pregunta);
+            _context.Preguntas.AddAsync(pregunta);
             _context.SaveChanges();
         }
     }

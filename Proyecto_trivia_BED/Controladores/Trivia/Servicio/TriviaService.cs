@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Proyecto_trivia_BED.ContextoDB.Entidad;
 using Proyecto_trivia_BED.Controladores.Trivia.API;
 using Proyecto_trivia_BED.Controladores.Trivia.API.DTO;
@@ -144,9 +145,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             }).ToList();
         }
 
-        public List<PreguntaDTO> ObtenerPreguntas(PreguntaRequestDTO request)
+        public async Task<List<PreguntaDTO>> ObtenerPreguntas(PreguntaRequestDTO request)
         {
-            var preguntas = _preguntaModelo.ObtenerPreguntas(request.CategoriaId, request.DificultadId, request.Cantidad);
+            Console.WriteLine($"request: {JsonConvert.SerializeObject(request)}");
+            var preguntas = await _preguntaModelo.ObtenerPreguntas(request.CategoriaId, request.DificultadId, request.Cantidad);
+            Console.WriteLine($"preguntas: {JsonConvert.SerializeObject(preguntas)}");
             return preguntas.Select(p => new PreguntaDTO
             {
                 IdPregunta = p.IdPregunta,
@@ -173,17 +176,16 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
 
         public bool GuardarPreguntaManual(PreguntaDTO pregunta)
         {
-            var entidad = new EPregunta
-            {
-                LaPregunta = pregunta.LaPregunta,
-                Categoria = new ECategoria { IdCategoria = pregunta.Categoria.IdCategoria },
-                Dificultad = new EDificultad { IdDificultad = pregunta.Dificultad.IdDificultad },
-                Respuestas = pregunta.Respuestas.Select(r => new ERespuesta
+            var entidad = new EPregunta(
+                pregunta.LaPregunta,
+                new ECategoria { IdCategoria = pregunta.Categoria.IdCategoria },
+                new EDificultad { IdDificultad = pregunta.Dificultad.IdDificultad },
+                pregunta.Respuestas.Select(r => new ERespuesta
                 {
                     SRespuesta = r.TextoRespuesta,
                     Correcta = r.Correcta
                 }).ToList()
-            };
+            );
 
             _preguntaModelo.GuardarPreguntaManual(entidad);
             return true;
