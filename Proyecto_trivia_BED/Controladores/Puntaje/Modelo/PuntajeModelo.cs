@@ -2,8 +2,9 @@
 using Proyecto_trivia_BED.ContextoDB;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo
 {
@@ -29,11 +30,11 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo
             return puntaje;
         }
 
-        public List<EPuntaje> ObtenerTodosLosPuntajes()
+        public async Task<List<EPuntaje>> ObtenerTodosLosPuntajes()
         {
-            return _context.Puntajes
-                .Include("Usuario")
-                .ToList();
+            return await _context.Puntajes
+                .Include(p => p.Usuario)
+                .ToListAsync();
         }
     }
 }

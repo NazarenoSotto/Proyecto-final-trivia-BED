@@ -6,6 +6,7 @@ using System;
 using Proyecto_trivia_BED.Controladores.Usuario.Modelo;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
 {
@@ -67,9 +68,9 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
             };
         }
 
-        public List<PuntajeDTO> ObtenerTodosLosPuntajes()
+        public async Task<List<PuntajeDTO>> ObtenerTodosLosPuntajes()
         {
-            var puntajes = _puntajeModelo.ObtenerTodosLosPuntajes();
+            var puntajes = await _puntajeModelo.ObtenerTodosLosPuntajes();
             var puntajeDTOs = new List<PuntajeDTO>();
             foreach (var puntaje in puntajes)
             {
