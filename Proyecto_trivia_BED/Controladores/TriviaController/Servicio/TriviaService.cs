@@ -13,16 +13,18 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
 {
     public class TriviaService
     {
-        private readonly Dictionary<PaginasElegiblesEnum, IPreguntaAPIAdapter> _apiAdapters;
+        private readonly Dictionary<PaginasElegiblesEnum, ITriviaAPIAdapter> _apiAdapters;
         private static PreguntaModelo _preguntaModelo;
+        private static CategoriaModelo _categoriaModelo;
 
-        public TriviaService(IEnumerable<IPreguntaAPIAdapter> apiAdapters, PreguntaModelo preguntaModelo)
+        public TriviaService(IEnumerable<ITriviaAPIAdapter> apiAdapters, PreguntaModelo preguntaModelo, CategoriaModelo categoriaModelo)
         {
-            _apiAdapters = new Dictionary<PaginasElegiblesEnum, IPreguntaAPIAdapter>
+            _apiAdapters = new Dictionary<PaginasElegiblesEnum, ITriviaAPIAdapter>
                 {
                     { PaginasElegiblesEnum.OpenTDB, apiAdapters.OfType<OpenTDBAPI>().FirstOrDefault() },
                 };
             _preguntaModelo = preguntaModelo;
+            _categoriaModelo = categoriaModelo;
         }
 
         public async Task<List<PreguntaDTO>> ObtenerPreguntasDesdeAPIAsync(PaginasElegiblesEnum apiEnum, int cantidad, int? categoriaId, int? dificultadId)
@@ -34,6 +36,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 {
                     preguntasObtenidas = await _apiAdapters[apiEnum].ObtenerPreguntasAsync(cantidad, categoriaId, dificultadId);
                 } else
+
                 {
                     throw new ArgumentException($"API no encontrada para '{apiEnum}'.");
                 }
@@ -46,6 +49,37 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
 
                 return preguntasAgregadasDTO;
             } catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<CategoriaDTO>> ObtenerCategoriasDesdeAPIAsync(PaginasElegiblesEnum apiEnum)
+        {
+            try
+            {
+                List<ECategoria> categoriasObtenidas = new List<ECategoria>();
+                List<ECategoria> categoriasAgregadas = new List<ECategoria>();
+                if (_apiAdapters.ContainsKey(apiEnum))
+                {
+                    categoriasObtenidas = await _apiAdapters[apiEnum].ObtenerCategoriasAsync();
+                }
+                else
+
+                {
+                    throw new ArgumentException($"API no encontrada para '{apiEnum}'.");
+                }
+
+                if (categoriasObtenidas.Count > 0)
+                {
+                    categoriasAgregadas = await _categoriaModelo.GuardarCategoriasAsync(categoriasObtenidas);
+                }
+
+                List<CategoriaDTO> categoriasAgregadasDTO = MapearListaDeCategoriasEntidadADTO(categoriasAgregadas);
+
+                return categoriasAgregadasDTO;
+            }
+            catch (Exception ex)
             {
                 throw;
             }
@@ -78,6 +112,20 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
         public List<PreguntaDTO> MapearListaDePreguntasEntidadADTO(List<EPregunta> preguntas)
         {
             return preguntas.Select(pregunta => mapearPreguntaEntidadADTO(pregunta)).ToList();
+        }
+
+        public CategoriaDTO mapearCategoriaEntidadADTO(ECategoria categoria)
+        {
+            return new CategoriaDTO
+            {
+                IdCategoria = categoria.IdCategoria,
+                NombreCategoria = categoria.NombreCategoria,
+                WebId = categoria.WebId
+            };
+        }
+        public List<CategoriaDTO> MapearListaDeCategoriasEntidadADTO(List<ECategoria> categorias)
+        {
+            return categorias.Select(categoria => mapearCategoriaEntidadADTO(categoria)).ToList();
         }
     }
 }

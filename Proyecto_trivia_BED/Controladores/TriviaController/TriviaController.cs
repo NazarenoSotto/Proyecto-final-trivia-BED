@@ -27,12 +27,28 @@ namespace Proyecto_trivia_BED.Controllers
             _triviaService = triviaService ?? throw new ArgumentNullException(nameof(triviaService));
         }
 
-        [HttpPost("obtenerPreguntaDesdeAPI")]
-        public async Task<IActionResult> ObtenerPreguntaDesdeAPI([FromBody] ObtenerPreguntasDesdeAPIRequestDTO requestBody)
+        [HttpPost("obtenerPreguntasDesdeAPI")]
+        public async Task<IActionResult> ObtenerPreguntasDesdeAPI([FromBody] ObtenerPreguntasDesdeAPIRequestDTO requestBody)
         {
             try
             {
                 List<PreguntaDTO> response = await _triviaService.ObtenerPreguntasDesdeAPIAsync(requestBody.Api, requestBody.Cantidad, requestBody.CategoriaId, requestBody.DificultadId);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Hubo un problema al obtener las preguntas.", details = ex.Message });
+            }
+
+        }
+
+        [HttpPost("obtenerCategoriasDesdeAPI")]
+        public async Task<IActionResult> ObtenerCategoriasDesdeAPI([FromBody] ObtenerCategoriasDesdeAPIRequestDTO requestBody)
+        {
+            try
+            {
+                List<CategoriaDTO> response = await _triviaService.CargarCategoriasDesdeAPIAsync(requestBody.Api);
 
                 return Ok(response);
             }
