@@ -17,7 +17,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<List<EPregunta>> GuardarPreguntasAsync(List<EPregunta> preguntas)
+        public async Task<List<EPregunta>> GuardarPreguntas(List<EPregunta> preguntas)
         {
             try {
 
@@ -48,12 +48,19 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
             return await _context.Preguntas
                 .Where(p => p.Categoria.IdCategoria == categoriaId &&
                             p.Dificultad.IdDificultad == dificultadId)
-                .OrderBy(p => Guid.NewGuid()) // Aleatorizar las preguntas generando un nuevo campo que termina mezclando los registros
+                .OrderBy(p => Guid.NewGuid())
                 .Take(cantidad)
-                .Include(p => p.Categoria) // Asegúrate de cargar la categoría
-                .Include(p => p.Dificultad) // Asegúrate de cargar la dificultad
-                .Include(p => p.Respuestas) // Asegúrate de cargar las respuestas
+                .Include(p => p.Categoria)
+                .Include(p => p.Dificultad)
+                .Include(p => p.Respuestas)
                 .ToListAsync();
+        }
+
+        public async Task<EPregunta> ObtenerPreguntaConRespuestas(int preguntaId)
+        {
+            return await _context.Preguntas
+                .Include(p => p.Respuestas)
+                .FirstOrDefaultAsync(p => p.IdPregunta == preguntaId);
         }
 
         public void GuardarPreguntaManual(EPregunta pregunta)

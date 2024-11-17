@@ -58,14 +58,14 @@ namespace Proyecto_trivia_BED.Controllers
 
             try
             {
-                var usuario = _usuarioService.ObtenerUsuarioPorNombre(usuarioDTO.NombreUsuario);
+                var usuarioAutenticado = _usuarioService.AutenticarUsuario(usuarioDTO);
 
-                if (usuario == null || !_usuarioService.VerificarPassword(usuarioDTO.Password, usuario.Password))
+                if (usuarioAutenticado == null)
                 {
-                    return Unauthorized("Nombre de usuario o contraseña incorrectos.");
+                    return Unauthorized("Credenciales inválidas.");
                 }
 
-                return Ok(usuario);
+                return Ok(usuarioAutenticado);
             }
             catch (Exception ex)
             {

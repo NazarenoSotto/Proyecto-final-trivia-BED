@@ -10,6 +10,8 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO
         public float ValorPuntaje { get; set; }
         public DateTime Fecha { get; set; }
         public int Tiempo { get; set; }
+        public int CantidadPreguntas { get; set; }
+        public int CantidadCorrectas { get; set; }
 
     }
 }

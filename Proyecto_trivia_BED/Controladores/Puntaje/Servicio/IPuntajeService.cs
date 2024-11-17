@@ -3,9 +3,9 @@ using Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO;
 
 namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
 {
-    public interface IPuntajeServicio
+    public interface IPuntajeService
     {
-        PuntajeDTO CalcularPuntaje(PuntajeRequestDTO request);
+        PuntajeDTO CalcularPuntaje(CalculoPuntajeDTO request);
         List<PuntajeDTO> ObtenerTodosLosPuntajes();
 
     }

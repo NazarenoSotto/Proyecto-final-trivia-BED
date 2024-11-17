@@ -10,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_trivia_BED.ContextoDB;
 using Proyecto_trivia_BED.Controladores.Usuario.Modelo;
+using Proyecto_trivia_BED.Controladores.Puntaje.Modelo;
+using Proyecto_trivia_BED.Controladores.Puntaje.Servicio;
 using Proyecto_trivia_BED.Controladores.Trivia.Modelo;
 using Proyecto_trivia_BED.Controladores.Trivia.Servicio;
 using Proyecto_trivia_BED.Controladores.Trivia.API.DTO;
@@ -44,6 +46,8 @@ namespace Proyecto_trivia_BED
             
             services.AddScoped<UsuarioModelo>();
             services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<PuntajeModelo>();
+            services.AddScoped<IPuntajeService, PuntajeService>();
             services.AddScoped<CategoriaModelo>();
             services.AddScoped<DificultadModelo>();
             services.AddScoped<PreguntaModelo>();

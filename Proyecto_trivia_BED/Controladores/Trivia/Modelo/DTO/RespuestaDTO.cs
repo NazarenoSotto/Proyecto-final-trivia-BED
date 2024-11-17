@@ -17,5 +17,10 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO
         /// </summary>
         public bool Correcta { get; set; }
 
+        /// <summary>
+        /// booleano que define si fue la respuesta seleccionada por el usuario
+        /// </summary>
+        public bool Seleccionada { get; set; }
+
     }
 }

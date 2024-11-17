@@ -5,24 +5,33 @@ using Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO;
 using System;
 using Proyecto_trivia_BED.Controladores.Usuario.Modelo;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
 {
-    public class PuntajeServicio : IPuntajeServicio
+    public class PuntajeService : IPuntajeService
     {
         private readonly PuntajeModelo _puntajeModelo;
         private readonly IUsuarioService _usuarioServicio;
 
-        public PuntajeServicio(PuntajeModelo puntajeModelo, IUsuarioService usuarioServicio)
+        public PuntajeService(PuntajeModelo puntajeModelo, IUsuarioService usuarioServicio)
         {
             _puntajeModelo = puntajeModelo ?? throw new ArgumentNullException(nameof(puntajeModelo));
             _usuarioServicio = usuarioServicio ?? throw new ArgumentNullException(nameof(usuarioServicio));
         }
 
-        public PuntajeDTO CalcularPuntaje(PuntajeRequestDTO request)
+        public PuntajeDTO CalcularPuntaje(CalculoPuntajeDTO request)
         {
-            float factorDificultad = request.Dificultad.Valor;
-            float calculoTiempo = (float)request.Tiempo / request.CantPreguntas;
+            if (request.PreguntasEvaluadas == null || !request.PreguntasEvaluadas.Any())
+                throw new ArgumentException("No hay preguntas evaluadas.");
+
+            var dificultad = request.PreguntasEvaluadas.First().Dificultad;
+            float factorDificultad = dificultad.Valor;
+
+            int cantPreguntas = request.PreguntasEvaluadas.Count;
+            int cantCorrectas = request.PreguntasEvaluadas.Count(p => p.Respuestas.Any(r => r.Correcta && r.Seleccionada));
+
+            float calculoTiempo = (float)request.Tiempo / cantPreguntas;
             float factorTiempo = calculoTiempo switch
             {
                 < 5 => 5f,
@@ -30,7 +39,7 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
                 _ => 1f
             };
 
-            float valorPuntaje = ((float)request.CantCorrectas / request.CantPreguntas) * factorDificultad * factorTiempo;
+            float valorPuntaje = ((float)cantCorrectas / cantPreguntas) * factorDificultad * factorTiempo;
 
             var puntajeEntidad = new EPuntaje
             {
@@ -52,7 +61,9 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
                 },
                 ValorPuntaje = puntajeGuardado.ValorPuntaje,
                 Fecha = puntajeGuardado.Fecha,
-                Tiempo = puntajeGuardado.Tiempo
+                Tiempo = puntajeGuardado.Tiempo,
+                CantidadPreguntas = cantPreguntas,
+                CantidadCorrectas = cantCorrectas
             };
         }
 

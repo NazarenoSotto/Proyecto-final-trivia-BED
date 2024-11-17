@@ -49,7 +49,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 }
 
                 if (preguntasObtenidas.Count > 0) {
-                    preguntasAgregadas = await _preguntaModelo.GuardarPreguntasAsync(preguntasObtenidas);
+                    preguntasAgregadas = await _preguntaModelo.GuardarPreguntas(preguntasObtenidas);
                 }
 
                 List<PreguntaDTO> preguntasAgregadasDTO = MapearListaDePreguntasEntidadADTO(preguntasAgregadas);
@@ -168,10 +168,26 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 Respuestas = p.Respuestas.Select(r => new RespuestaDTO
                 {
                     IdRespuesta = r.IdRespuesta,
-                    TextoRespuesta = r.SRespuesta,
-                    Correcta = r.Correcta
+                    TextoRespuesta = r.SRespuesta
                 }).ToList()
             }).ToList();
+        }
+
+        public async Task<PreguntaDTO> VerificarPregunta(PreguntaDTO preguntaDTO)
+        {
+            var pregunta = await _preguntaModelo.ObtenerPreguntaConRespuestas(preguntaDTO.IdPregunta);
+            if (pregunta == null)
+            {
+                throw new InvalidOperationException("La pregunta no existe.");
+            }
+
+            var respuestaCorrectaId = pregunta.Respuestas.FirstOrDefault(r => r.Correcta)?.IdRespuesta;
+            foreach (var respuesta in preguntaDTO.Respuestas)
+            {
+                respuesta.Correcta = respuesta.IdRespuesta == respuestaCorrectaId;
+            }
+
+            return preguntaDTO;
         }
 
         public bool GuardarPreguntaManual(PreguntaDTO pregunta)

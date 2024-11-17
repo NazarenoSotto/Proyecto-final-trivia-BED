@@ -77,5 +77,21 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         {
             return _usuarioModelo.ObtenerUsuarioPorId(idUsuario);
         }
+
+        public UsuarioDTO AutenticarUsuario(UsuarioDTO usuarioDTO)
+        {
+            if (usuarioDTO == null)
+                throw new ArgumentNullException(nameof(usuarioDTO));
+
+            var usuarioEntidad = ObtenerUsuarioPorNombre(usuarioDTO.NombreUsuario);
+            if (usuarioEntidad == null)
+                return null;
+
+            bool passwordValido = VerificarPassword(usuarioDTO.Password, usuarioEntidad.Password);
+            if (!passwordValido)
+                return null;
+
+            return ConvertirADTO(usuarioEntidad);
+        }
     }
 }

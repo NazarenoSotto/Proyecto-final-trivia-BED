@@ -86,6 +86,25 @@ namespace Proyecto_trivia_BED.Controllers
             }
         }
 
+        [HttpPost("verificarPregunta")]
+        public async Task<IActionResult> VerificarPregunta([FromBody] PreguntaDTO preguntaDTO)
+        {
+            if (preguntaDTO == null)
+            {
+                return BadRequest("La solicitud no puede estar vacía.");
+            }
+
+            try
+            {
+                var resultado = await _triviaService.VerificarPregunta(preguntaDTO);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al verificar la pregunta: {ex.Message}");
+            }
+        }
+
         //[HttpPost("procesarRespuestas")]
         //public IActionResult ProcesarRespuestas([FromQuery] int cantidad, [FromQuery] int categoriaId, [FromQuery] int dificultadId)
         //{

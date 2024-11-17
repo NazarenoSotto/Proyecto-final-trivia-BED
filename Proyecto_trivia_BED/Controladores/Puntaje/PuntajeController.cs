@@ -3,21 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO;
 using Proyecto_trivia_BED.Controladores.Puntaje.Servicio;
 
-namespace Proyecto_trivia_BED.Controladores.Puntaje
+namespace Proyecto_trivia_BED.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class PuntajeController : ControllerBase
     {
-        private readonly IPuntajeServicio _puntajeServicio;
+        private readonly IPuntajeService _puntajeService;
 
-        public PuntajeController(IPuntajeServicio puntajeServicio)
+        public PuntajeController(IPuntajeService puntajeService)
         {
-            _puntajeServicio = puntajeServicio ?? throw new ArgumentNullException(nameof(puntajeServicio));
+            _puntajeService = puntajeService ?? throw new ArgumentNullException(nameof(puntajeService));
         }
 
         [HttpPost("calcular")]
-        public IActionResult CalcularPuntaje([FromBody] PuntajeRequestDTO request)
+        public IActionResult CalcularPuntaje([FromBody] CalculoPuntajeDTO request)
         {
             if (request == null)
             {
@@ -26,7 +26,7 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje
 
             try
             {
-                var puntaje = _puntajeServicio.CalcularPuntaje(request);
+                var puntaje = _puntajeService.CalcularPuntaje(request);
                 return Ok(puntaje);
             }
             catch (Exception ex)
@@ -40,7 +40,7 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje
         {
             try
             {
-                var puntajes = _puntajeServicio.ObtenerTodosLosPuntajes();
+                var puntajes = _puntajeService.ObtenerTodosLosPuntajes();
                 return Ok(puntajes);
             }
             catch (Exception ex)
