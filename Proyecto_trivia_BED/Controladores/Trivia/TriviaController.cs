@@ -39,6 +39,7 @@ namespace Proyecto_trivia_BED.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Hubo un problema al obtener las preguntas: ${ex.Message}");
                 return StatusCode(500, new { message = "Hubo un problema al obtener las preguntas.", details = ex.Message });
             }
 
@@ -54,6 +55,7 @@ namespace Proyecto_trivia_BED.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error al obtener categorías: ${ex.Message}");
                 return StatusCode(500, $"Error al obtener categorías: {ex.Message}");
             }
         }
@@ -68,6 +70,7 @@ namespace Proyecto_trivia_BED.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error al obtener dificultades: {ex.Message}");
                 return StatusCode(500, $"Error al obtener dificultades: {ex.Message}");
             }
         }
@@ -82,6 +85,7 @@ namespace Proyecto_trivia_BED.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error al obtener preguntas: {ex.Message}");
                 return StatusCode(500, $"Error al obtener preguntas: {ex.Message}");
             }
         }
@@ -101,23 +105,25 @@ namespace Proyecto_trivia_BED.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error al verificar la pregunta: {ex.Message}");
                 return StatusCode(500, $"Error al verificar la pregunta: {ex.Message}");
             }
         }
 
-        //[HttpPost("procesarRespuestas")]
-        //public IActionResult ProcesarRespuestas([FromQuery] int cantidad, [FromQuery] int categoriaId, [FromQuery] int dificultadId)
-        //{
-        //    try
-        //    {
-        //        var preguntas = _triviaService.ObtenerPreguntas(new PreguntaRequestDTO { Cantidad = cantidad, CategoriaId = categoriaId, DificultadId = dificultadId });
-        //        return Ok(preguntas);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Error al obtener preguntas: {ex.Message}");
-        //    }
-        //}
+        [HttpPost("agregarPreguntaManual")]
+        public async Task<IActionResult> agregarPreguntaManual([FromBody] PreguntaDTO pregunta)
+        {
+            try
+            {
+                await _triviaService.GuardarPreguntaManual(pregunta, PaginasElegiblesEnum.OpenTDB);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al agregar pregunta: {ex.Message}");
+                return StatusCode(500, $"Error al agregar pregunta: {ex.Message}");
+            }
+        }
 
         [HttpPost("obtenerCategoriasDesdeAPI")]
         public async Task<IActionResult> ObtenerCategoriasDesdeAPI([FromBody] ObtenerCategoriasDesdeAPIRequestDTO requestBody)

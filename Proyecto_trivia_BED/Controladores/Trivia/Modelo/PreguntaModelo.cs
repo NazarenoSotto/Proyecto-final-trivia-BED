@@ -63,9 +63,9 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
                 .FirstOrDefaultAsync(p => p.IdPregunta == preguntaId);
         }
 
-        public void GuardarPreguntaManual(EPregunta pregunta)
+        public async Task GuardarPregunta(EPregunta pregunta)
         {
-            _context.Preguntas.AddAsync(pregunta);
+            await _context.Preguntas.AddAsync(pregunta);
             _context.SaveChanges();
         }
     }

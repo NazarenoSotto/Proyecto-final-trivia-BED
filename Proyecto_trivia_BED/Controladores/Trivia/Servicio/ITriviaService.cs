@@ -12,7 +12,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
         public Task<List<DificultadDTO>> ObtenerDificultades(PaginasElegiblesEnum api);
         public Task<List<PreguntaDTO>> ObtenerPreguntas(PreguntaRequestDTO request);
         public Task<PreguntaDTO> VerificarPregunta(PreguntaDTO preguntaDTO);
-        public bool GuardarPreguntaManual(PreguntaDTO pregunta);
+        public Task<bool> GuardarPreguntaManual(PreguntaDTO pregunta, PaginasElegiblesEnum api);
         public Task<List<CategoriaDTO>> CargarCategoriasDesdeAPIAsync(PaginasElegiblesEnum apiEnum);
     }
 }

@@ -190,21 +190,41 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             return preguntaDTO;
         }
 
-        public bool GuardarPreguntaManual(PreguntaDTO pregunta)
+        public async Task<bool> GuardarPreguntaManual(PreguntaDTO pregunta, PaginasElegiblesEnum api)
         {
-            var entidad = new EPregunta(
-                pregunta.LaPregunta,
-                new ECategoria { IdCategoria = pregunta.Categoria.IdCategoria },
-                new EDificultad { IdDificultad = pregunta.Dificultad.IdDificultad },
-                pregunta.Respuestas.Select(r => new ERespuesta
-                {
-                    SRespuesta = r.TextoRespuesta,
-                    Correcta = r.Correcta
-                }).ToList()
-            );
+            try {
+                var categoria = await _categoriaModelo.obtenerCategoriaPorIdAsync(pregunta.Categoria.IdCategoria);
 
-            _preguntaModelo.GuardarPreguntaManual(entidad);
+                if (categoria == null)
+                {
+                    throw new ArgumentException("idCategoría inválido");
+                }
+
+                var dificultad = await _dificultadModelo.obtenerDificultadPorId(pregunta.Dificultad.IdDificultad);
+
+                if (dificultad == null)
+                {
+                    throw new ArgumentException("idDificultad inválido");
+                }
+
+                var entidad = new EPregunta(
+                    pregunta.LaPregunta,
+                    categoria,
+                    dificultad,
+                    pregunta.Respuestas.Select(r => new ERespuesta
+                    {
+                        SRespuesta = r.TextoRespuesta,
+                        Correcta = r.Correcta
+                    }).ToList()
+                );
+
+                await _preguntaModelo.GuardarPregunta(entidad);
             return true;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         private CategoriaDTO mapearCategoriaEntidadADTO(ECategoria categoria)
