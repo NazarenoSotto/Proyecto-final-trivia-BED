@@ -9,6 +9,7 @@ using Proyecto_trivia_BED.ContextoDB;
 using System.Data.Entity;
 using Proyecto_trivia_BED.Controladores.Trivia.Servicio;
 using Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO;
+using Proyecto_trivia_BED.ContextoDB.Entidad;
 
 namespace Proyecto_trivia_BED.Controllers
 {
@@ -76,13 +77,17 @@ namespace Proyecto_trivia_BED.Controllers
         {
             try
             {
+                _logger.LogInformation($"requestBody.Api: {requestBody.Api.ToString()} aaaa");
+                if (!Enum.IsDefined(typeof(PaginasElegiblesEnum), requestBody.Api)) {
+                    throw new ArgumentException("Valor inválido en 'api'");
+                }
                 List<CategoriaDTO> response = await _triviaService.CargarCategoriasDesdeAPIAsync(requestBody.Api);
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "Hubo un problema al obtener las preguntas.", details = ex.Message });
+                return StatusCode(500, new { message = "Hubo un problema al obtener las categorias.", details = ex.Message });
             }
 
         }

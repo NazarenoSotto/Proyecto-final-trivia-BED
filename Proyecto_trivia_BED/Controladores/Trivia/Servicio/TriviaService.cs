@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
 {
-    public class TriviaService
+    public class TriviaService: ITriviaService
     {
         private readonly Dictionary<PaginasElegiblesEnum, ITriviaAPIAdapter> _apiAdapters;
         private static PreguntaModelo _preguntaModelo;
@@ -19,7 +19,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
         private static DificultadModelo _dificultadModelo;
 
         public TriviaService(
-            IEnumerable<IPreguntaAPIAdapter> apiAdapters, 
+            IEnumerable<ITriviaAPIAdapter> apiAdapters, 
             PreguntaModelo preguntaModelo, 
             CategoriaModelo categoriaModelo,
             DificultadModelo dificultadModelo)
@@ -60,12 +60,13 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             }
         }
 
-        public async Task<List<CategoriaDTO>> ObtenerCategoriasDesdeAPIAsync(PaginasElegiblesEnum apiEnum)
+        public async Task<List<CategoriaDTO>> CargarCategoriasDesdeAPIAsync(PaginasElegiblesEnum apiEnum)
         {
             try
             {
                 List<ECategoria> categoriasObtenidas = new List<ECategoria>();
                 List<ECategoria> categoriasAgregadas = new List<ECategoria>();
+                Console.WriteLine($"_apiAdapters.count: {_apiAdapters.Count.ToString()}");
                 if (_apiAdapters.ContainsKey(apiEnum))
                 {
                     categoriasObtenidas = await _apiAdapters[apiEnum].ObtenerCategoriasAsync();
@@ -91,7 +92,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             }
         }
 
-        public PreguntaDTO mapearPreguntaEntidadADTO(EPregunta pregunta)
+        private PreguntaDTO mapearPreguntaEntidadADTO(EPregunta pregunta)
         {
             return new PreguntaDTO
             {
@@ -117,7 +118,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             };
         }
 
-        public List<PreguntaDTO> MapearListaDePreguntasEntidadADTO(List<EPregunta> preguntas)
+        private List<PreguntaDTO> MapearListaDePreguntasEntidadADTO(List<EPregunta> preguntas)
         {
             return preguntas.Select(pregunta => mapearPreguntaEntidadADTO(pregunta)).ToList();
         }
@@ -188,7 +189,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             return true;
         }
 
-        public CategoriaDTO mapearCategoriaEntidadADTO(ECategoria categoria)
+        private CategoriaDTO mapearCategoriaEntidadADTO(ECategoria categoria)
         {
             return new CategoriaDTO
             {
@@ -197,7 +198,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 WebId = categoria.WebId
             };
         }
-        public List<CategoriaDTO> MapearListaDeCategoriasEntidadADTO(List<ECategoria> categorias)
+        private List<CategoriaDTO> MapearListaDeCategoriasEntidadADTO(List<ECategoria> categorias)
         {
             return categorias.Select(categoria => mapearCategoriaEntidadADTO(categoria)).ToList();
         }

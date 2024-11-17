@@ -59,19 +59,23 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
         public async Task<List<ECategoria>> ObtenerCategoriasAsync()
         {
             string baseEndpoint = "/api_category.php";
+            string fullUrl = new Uri(_httpClient.BaseAddress, baseEndpoint).ToString();
+            Console.WriteLine($"URL generada: {fullUrl}");
 
             List<ECategoria> entityCategorias = new List<ECategoria>();
             try
             {
+                
                 // Se obtiene los datos de categorias
                 HttpResponseMessage response = await _httpClient.GetAsync(baseEndpoint);
 
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
-
+                    Console.WriteLine($"responseContent: {responseContent}");
                     // Deserializar el contenido JSON en un objeto dynamic
                     OpenTDBCategoriaResponseDTO mResponseJSON = JsonConvert.DeserializeObject<OpenTDBCategoriaResponseDTO>(responseContent);
+                    Console.WriteLine($"responseContent: {mResponseJSON.TriviaCategories.Count} categories found");
 
                     entityCategorias = mResponseJSON.TriviaCategories.Select(c => new ECategoria
                     (
@@ -79,6 +83,8 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
                         c.Id,
                         PaginasElegiblesEnum.OpenTDB
                     )).ToList();
+
+                    Console.WriteLine($"entityCategorias: {entityCategorias.Count}");
                 }
 
                 return entityCategorias;
