@@ -42,6 +42,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
             return await _context.Categorias.FirstOrDefaultAsync(cat => cat.IdCategoria == categoriaId);
         }
 
+        public List<ECategoria> ObtenerCategorias()
+        {
+            return _context.Categorias.ToList();
+        }
+
         public async Task<List<ECategoria>> GuardarCategoriasAsync(List<ECategoria> categorias)
         {
             try

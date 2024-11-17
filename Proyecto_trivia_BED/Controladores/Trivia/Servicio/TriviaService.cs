@@ -16,8 +16,13 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
         private readonly Dictionary<PaginasElegiblesEnum, ITriviaAPIAdapter> _apiAdapters;
         private static PreguntaModelo _preguntaModelo;
         private static CategoriaModelo _categoriaModelo;
+        private static DificultadModelo _dificultadModelo;
 
-        public TriviaService(IEnumerable<ITriviaAPIAdapter> apiAdapters, PreguntaModelo preguntaModelo, CategoriaModelo categoriaModelo)
+        public TriviaService(
+            IEnumerable<IPreguntaAPIAdapter> apiAdapters, 
+            PreguntaModelo preguntaModelo, 
+            CategoriaModelo categoriaModelo,
+            DificultadModelo dificultadModelo)
         {
             _apiAdapters = new Dictionary<PaginasElegiblesEnum, ITriviaAPIAdapter>
                 {
@@ -25,6 +30,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 };
             _preguntaModelo = preguntaModelo;
             _categoriaModelo = categoriaModelo;
+            _dificultadModelo = dificultadModelo;
         }
 
         public async Task<List<PreguntaDTO>> ObtenerPreguntasDesdeAPIAsync(PaginasElegiblesEnum apiEnum, int cantidad, int? categoriaId, int? dificultadId)
@@ -84,6 +90,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 throw;
             }
         }
+
         public PreguntaDTO mapearPreguntaEntidadADTO(EPregunta pregunta)
         {
             return new PreguntaDTO
@@ -109,9 +116,76 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 }).ToList()
             };
         }
+
         public List<PreguntaDTO> MapearListaDePreguntasEntidadADTO(List<EPregunta> preguntas)
         {
             return preguntas.Select(pregunta => mapearPreguntaEntidadADTO(pregunta)).ToList();
+        }
+
+        public List<CategoriaDTO> ObtenerCategorias()
+        {
+            var categorias = _categoriaModelo.ObtenerCategorias();
+            return categorias.Select(c => new CategoriaDTO
+            {
+                IdCategoria = c.IdCategoria,
+                NombreCategoria = c.NombreCategoria
+            }).ToList();
+        }
+
+        public List<DificultadDTO> ObtenerDificultades()
+        {
+            var dificultades = _dificultadModelo.ObtenerDificultades();
+            return dificultades.Select(d => new DificultadDTO
+            {
+                IdDificultad = d.IdDificultad,
+                NombreDificultad = d.NombreDificultad,
+                Valor = d.Valor
+            }).ToList();
+        }
+
+        public List<PreguntaDTO> ObtenerPreguntas(PreguntaRequestDTO request)
+        {
+            var preguntas = _preguntaModelo.ObtenerPreguntas(request.CategoriaId, request.DificultadId, request.Cantidad);
+            return preguntas.Select(p => new PreguntaDTO
+            {
+                IdPregunta = p.IdPregunta,
+                LaPregunta = p.LaPregunta,
+                Categoria = new CategoriaDTO
+                {
+                    IdCategoria = p.Categoria.IdCategoria,
+                    NombreCategoria = p.Categoria.NombreCategoria
+                },
+                Dificultad = new DificultadDTO
+                {
+                    IdDificultad = p.Dificultad.IdDificultad,
+                    NombreDificultad = p.Dificultad.NombreDificultad,
+                    Valor = p.Dificultad.Valor
+                },
+                Respuestas = p.Respuestas.Select(r => new RespuestaDTO
+                {
+                    IdRespuesta = r.IdRespuesta,
+                    TextoRespuesta = r.SRespuesta,
+                    Correcta = r.Correcta
+                }).ToList()
+            }).ToList();
+        }
+
+        public bool GuardarPreguntaManual(PreguntaDTO pregunta)
+        {
+            var entidad = new EPregunta
+            {
+                LaPregunta = pregunta.LaPregunta,
+                Categoria = new ECategoria { IdCategoria = pregunta.Categoria.IdCategoria },
+                Dificultad = new EDificultad { IdDificultad = pregunta.Dificultad.IdDificultad },
+                Respuestas = pregunta.Respuestas.Select(r => new ERespuesta
+                {
+                    SRespuesta = r.TextoRespuesta,
+                    Correcta = r.Correcta
+                }).ToList()
+            };
+
+            _preguntaModelo.GuardarPreguntaManual(entidad);
+            return true;
         }
 
         public CategoriaDTO mapearCategoriaEntidadADTO(ECategoria categoria)

@@ -2,6 +2,7 @@
 using Proyecto_trivia_BED.ContextoDB;
 using Proyecto_trivia_BED.ContextoDB.Entidad;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,6 +25,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         public async Task<EDificultad> obtenerDificultadPorId(int dificultadId)
         {
             return await _context.Dificultades.FirstOrDefaultAsync(dif => dif.IdDificultad == dificultadId);
+        }
+
+        public List<EDificultad> ObtenerDificultades()
+        {
+            return _context.Dificultades.ToList();
         }
     }
 }

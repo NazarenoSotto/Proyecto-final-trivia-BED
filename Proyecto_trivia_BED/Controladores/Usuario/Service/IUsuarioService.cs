@@ -11,5 +11,6 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         bool NombreUsuarioExistente(string nombreUsuario);
         EUsuario ObtenerUsuarioPorNombre(string nombreUsuario);
         bool VerificarPassword(string passwordIngresada, string passwordAlmacenada);
+        EUsuario ObtenerUsuarioPorId(int idUsuario);
     }
 }

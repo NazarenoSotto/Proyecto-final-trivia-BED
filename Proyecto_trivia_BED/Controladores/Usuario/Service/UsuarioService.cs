@@ -67,9 +67,15 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         {
             return _usuarioModelo.ObtenerUsuarioPorNombre(nombreUsuario);
         }
+
         public bool VerificarPassword(string passwordIngresada, string passwordAlmacenada)
         {
             return BCrypt.Net.BCrypt.Verify(passwordIngresada, passwordAlmacenada);
+        }
+
+        public EUsuario ObtenerUsuarioPorId(int idUsuario)
+        {
+            return _usuarioModelo.ObtenerUsuarioPorId(idUsuario);
         }
     }
 }
