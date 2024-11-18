@@ -29,7 +29,7 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
             return ConvertirADTO(usuarioGuardado);
         }
 
-        public UsuarioDTO ConvertirADTO(EUsuario usuario)
+        private UsuarioDTO ConvertirADTO(EUsuario usuario)
         {
             if (usuario == null) return null;
 
@@ -42,7 +42,7 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
             };
         }
 
-        public EUsuario ConvertirAEntidad(UsuarioDTO usuarioDTO)
+        private EUsuario ConvertirAEntidad(UsuarioDTO usuarioDTO)
         {
             if (usuarioDTO == null) return null;
 
@@ -63,12 +63,12 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
             return _usuarioModelo.NombreUsuarioExistente(nombreUsuario);
         }
 
-        public EUsuario ObtenerUsuarioPorNombre(string nombreUsuario)
+        private EUsuario ObtenerUsuarioPorNombre(string nombreUsuario)
         {
             return _usuarioModelo.ObtenerUsuarioPorNombre(nombreUsuario);
         }
 
-        public bool VerificarPassword(string passwordIngresada, string passwordAlmacenada)
+        private bool VerificarPassword(string passwordIngresada, string passwordAlmacenada)
         {
             return BCrypt.Net.BCrypt.Verify(passwordIngresada, passwordAlmacenada);
         }

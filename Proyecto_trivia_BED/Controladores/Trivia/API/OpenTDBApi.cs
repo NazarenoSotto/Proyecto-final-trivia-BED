@@ -54,7 +54,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
             // Agregar "difficulty" si se proporciona un valor
             if (pDificultadId.HasValue)
             {
-                EDificultad dificultad = await _dificultadModelo.obtenerDificultadPorId((int)pDificultadId);
+                EDificultad dificultad = await _dificultadModelo.ObtenerDificultadPorId((int)pDificultadId);
                 if (dificultad != null) {
                     parametros.Add($"difficulty={dificultad.NombreDificultad}");
                 }
@@ -138,7 +138,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
                         ECategoria categoriaPregunta = await _categoriaModelo.obtenerCategoriaPorNombreAsync(nombreCategoria, PaginasElegiblesEnum.OpenTDB);
 
                         string nombreDificultad = HttpUtility.HtmlDecode(bResponseItem.difficulty.ToString());
-                        EDificultad dificultadPregunta = await _dificultadModelo.obtenerDificultadPorNombreAsync(nombreDificultad, PaginasElegiblesEnum.OpenTDB);
+                        EDificultad dificultadPregunta = await _dificultadModelo.ObtenerDificultadPorNombreAsync(nombreDificultad, PaginasElegiblesEnum.OpenTDB);
                         EPregunta mPregunta = new EPregunta(mLaPregunta, categoriaPregunta, dificultadPregunta, lRespuestas);
                         lPreguntas.Add(mPregunta);
                     }

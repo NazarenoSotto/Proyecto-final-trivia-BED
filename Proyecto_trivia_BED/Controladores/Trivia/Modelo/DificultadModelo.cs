@@ -17,12 +17,12 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<EDificultad> obtenerDificultadPorNombreAsync(string dificultadNombre, PaginasElegiblesEnum externalWeb)
+        public async Task<EDificultad> ObtenerDificultadPorNombreAsync(string dificultadNombre, PaginasElegiblesEnum externalWeb)
         {
             return await _context.Dificultades.FirstOrDefaultAsync(dif => dif.NombreDificultad == dificultadNombre && dif.externalAPI == externalWeb);
         }
 
-        public async Task<EDificultad> obtenerDificultadPorId(int dificultadId)
+        public async Task<EDificultad> ObtenerDificultadPorId(int dificultadId)
         {
             return await _context.Dificultades.FirstOrDefaultAsync(dif => dif.IdDificultad == dificultadId);
         }

@@ -200,7 +200,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                     throw new ArgumentException("idCategoría inválido");
                 }
 
-                var dificultad = await _dificultadModelo.obtenerDificultadPorId(pregunta.Dificultad.IdDificultad);
+                var dificultad = await _dificultadModelo.ObtenerDificultadPorId(pregunta.Dificultad.IdDificultad);
 
                 if (dificultad == null)
                 {

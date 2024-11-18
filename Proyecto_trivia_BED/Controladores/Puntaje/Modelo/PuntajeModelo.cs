@@ -34,6 +34,7 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo
         {
             return await _context.Puntajes
                 .Include(p => p.Usuario)
+                .OrderByDescending(p => p.ValorPuntaje)
                 .ToListAsync();
         }
     }
