@@ -111,7 +111,7 @@ namespace Proyecto_trivia_BED.Controllers
         }
 
         [HttpPost("agregarPreguntaManual")]
-        public async Task<IActionResult> agregarPreguntaManual([FromBody] PreguntaDTO pregunta)
+        public async Task<IActionResult> AgregarPreguntaManual([FromBody] PreguntaDTO pregunta)
         {
             try
             {

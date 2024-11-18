@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
 {
-    public class DificultadModelo: IDificultadModelo
+    public class DificultadModelo
     {
         private readonly TriviaContext _context;
 
