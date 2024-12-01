@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Proyecto_trivia_BED.ContextoDB.Entidad
 {
+    /// <summary>
+    /// Categoría de las preguntas
+    /// </summary>
     public class ECategoria
     {
         /// <summary>
@@ -16,19 +19,20 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// </summary>
         public string NombreCategoria { get; set; }
         /// <summary>
-        /// Categoría para las preguntas
+        /// Identificación de la categoría en su web externa
         /// </summary>
-        /// <param name="pNombre">Nombre de la categoría</param>
         public int WebId { get; set; }
         /// <summary>
-        /// Id de la categoria en su respectiva web
+        /// Web externa de la categoría
         /// </summary>
         public PaginasElegiblesEnum externalAPI { get; set; }
+
         /// <summary>
-        /// Web externa de la categoria
+        /// Crear una nueva instancia de ECategoría
         /// </summary>
-
-
+        /// <param name="pNombre">Nombre de la categoría</param>
+        /// <param name="pWebId">Identificación externa de su respectiva web</param>
+        /// <param name="externalApi">Enumerable que representa la web externa de la categoría</param>
         public ECategoria(string pNombre, int pWebId, PaginasElegiblesEnum externalApi)
         {
             NombreCategoria = pNombre;
@@ -36,6 +40,12 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
             externalAPI = externalApi;
         }
 
+        /// <summary>
+        /// Crear una nueva instancia de ECategoría con sólo el nombre
+        /// </summary>
+        /// <param name="pNombre">Nombre de la categoría</param>
+        /// <param name="WebId">Identificación externa de su respectiva web</param>
+        /// <param name="externalApi">Enumerable que representa la web externa de la categoría</param>
         public ECategoria(string pNombre)
         {
             NombreCategoria = pNombre;

@@ -3,7 +3,10 @@ using Proyecto_trivia_BED.ContextoDB.Entidad;
 
 namespace Proyecto_trivia_BED.ContextoDB
 {
-    public class TriviaContext : DbContext  // Asegúrate de que herede de DbContext
+    /// <summary>
+    /// Context para realizar acciones en la base de datos
+    /// </summary>
+    public class TriviaContext : DbContext
     {
         public TriviaContext(DbContextOptions<TriviaContext> options) : base(options) { }
 
@@ -14,6 +17,10 @@ namespace Proyecto_trivia_BED.ContextoDB
         public DbSet<EUsuario> Usuarios { get; set; }
         public DbSet<EPuntaje> Puntajes { get; set; }
 
+        /// <summary>
+        /// Seed de inicialización de datos
+        /// </summary>
+        /// <param name="modelBuilder">ModelBuilder</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -8,15 +8,27 @@ using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
 {
+    /// <summary>
+    /// Clase modelo de pregunta
+    /// </summary>
     public class PreguntaModelo
     {
         private readonly TriviaContext _context;
 
+        /// <summary>
+        /// Constructor de PreguntaModelo
+        /// </summary>
+        /// <param name="context">TriviaContext</param>
         public PreguntaModelo(TriviaContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        /// <summary>
+        /// Guardar múltiples preguntas
+        /// </summary>
+        /// <param name="preguntas">Preguntas a guardar</param>
+        /// <returns></returns>
         public async Task<List<EPregunta>> GuardarPreguntas(List<EPregunta> preguntas)
         {
             try {
@@ -43,6 +55,13 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
             }
         }
 
+        /// <summary>
+        /// Obtener lista de preguntas
+        /// </summary>
+        /// <param name="categoriaId">Categoría de las preguntas</param>
+        /// <param name="dificultadId">Dificultad de las preguntas</param>
+        /// <param name="cantidad">Cantidad de preguntas</param>
+        /// <returns></returns>
         public async Task<List<EPregunta>> ObtenerPreguntas(int categoriaId, int dificultadId, int cantidad)
         {
             return await _context.Preguntas
@@ -55,14 +74,22 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
                 .Include(p => p.Respuestas)
                 .ToListAsync();
         }
-
+        /// <summary>
+        /// Obtener una pregunta por Id con sus respuestas
+        /// </summary>
+        /// <param name="preguntaId">Id de la pregunta</param>
+        /// <returns>EPregunta</returns>
         public async Task<EPregunta> ObtenerPreguntaConRespuestas(int preguntaId)
         {
             return await _context.Preguntas
                 .Include(p => p.Respuestas)
                 .FirstOrDefaultAsync(p => p.IdPregunta == preguntaId);
         }
-
+        /// <summary>
+        /// Guardar una pregunta
+        /// </summary>
+        /// <param name="pregunta">Pregunta a guardar</param>
+        /// <returns></returns>
         public async Task GuardarPregunta(EPregunta pregunta)
         {
             await _context.Preguntas.AddAsync(pregunta);

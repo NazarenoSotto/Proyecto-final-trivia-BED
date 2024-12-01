@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
 {
+    /// <summary>
+    /// Servicio para las fucnionalidades de trivia
+    /// </summary>
     public class TriviaService: ITriviaService
     {
         private readonly Dictionary<PaginasElegiblesEnum, ITriviaAPIAdapter> _apiAdapters;
@@ -19,6 +22,13 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
         private static CategoriaModelo _categoriaModelo;
         private static DificultadModelo _dificultadModelo;
 
+        /// <summary>
+        /// Constructor de TriviaService
+        /// </summary>
+        /// <param name="apiAdapters">IEnumerable<ITriviaAPIAdapter></param>
+        /// <param name="preguntaModelo">PreguntaModelo</param>
+        /// <param name="categoriaModelo">CategoriaModelo</param>
+        /// <param name="dificultadModelo">DificultadModelo</param>
         public TriviaService(
             IEnumerable<ITriviaAPIAdapter> apiAdapters, 
             PreguntaModelo preguntaModelo, 
@@ -34,6 +44,14 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             _dificultadModelo = dificultadModelo;
         }
 
+        /// <summary>
+        /// Obtener preguntas desde la api
+        /// </summary>
+        /// <param name="apiEnum">Enumerable que representa la API</param>
+        /// <param name="cantidad">Cantidad de preguntas</param>
+        /// <param name="categoriaId">Categoría de las preguntas</param>
+        /// <param name="dificultadId">Dificultad de las preguntas</param>
+        /// <returns>Lista de PreguntaDTO</returns>
         public async Task<List<PreguntaDTO>> ObtenerPreguntasDesdeAPIAsync(PaginasElegiblesEnum apiEnum, int cantidad, int? categoriaId, int? dificultadId)
         {
             try { 
@@ -61,6 +79,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             }
         }
 
+        /// <summary>
+        /// Cargar categorías desde la API seleccionada
+        /// </summary>
+        /// <param name="apiEnum">Enumerable que representa la API</param>
+        /// <returns>Lista de CategoriaDTO</returns>
         public async Task<List<CategoriaDTO>> CargarCategoriasDesdeAPIAsync(PaginasElegiblesEnum apiEnum)
         {
             try
@@ -87,12 +110,17 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
 
                 return categoriasAgregadasDTO;
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
         }
 
+        /// <summary>
+        /// Convertir pregunta entidad a DTO
+        /// </summary>
+        /// <param name="pregunta">Pregunta entidad a mapear</param>
+        /// <returns>PreguntaDTO</returns>
         private PreguntaDTO mapearPreguntaEntidadADTO(EPregunta pregunta)
         {
             return new PreguntaDTO
@@ -118,12 +146,21 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 }).ToList()
             };
         }
-
+        /// <summary>
+        /// Convertir lista de preguntas entidad a preguntas DTO
+        /// </summary>
+        /// <param name="preguntas">Preguntas entidad a convertir</param>
+        /// <returns>Lista de PreguntaDTO</returns>
         private List<PreguntaDTO> MapearListaDePreguntasEntidadADTO(List<EPregunta> preguntas)
         {
             return preguntas.Select(pregunta => mapearPreguntaEntidadADTO(pregunta)).ToList();
         }
 
+        /// <summary>
+        /// Obtener lista de categorías
+        /// </summary>
+        /// <param name="api">Enumerable que representa la API</param>
+        /// <returns>Lista de CategoriaDTO</returns>
         public async Task<List<CategoriaDTO>> ObtenerCategorias(PaginasElegiblesEnum api)
         {
             var categorias = await _categoriaModelo.ObtenerCategoriasAsync(api);
@@ -134,6 +171,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             }).ToList();
         }
 
+        /// <summary>
+        /// Obtener lista de dificultades
+        /// </summary>
+        /// <param name="api">Enumerable que representa la API</param>
+        /// <returns></returns>
         public async Task<List<DificultadDTO>> ObtenerDificultades(PaginasElegiblesEnum api)
         {
             var dificultades = await _dificultadModelo.ObtenerDificultadesAsync(api);
@@ -145,11 +187,14 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             }).ToList();
         }
 
+        /// <summary>
+        /// Obtener lista de preguntas
+        /// </summary>
+        /// <param name="request">PreguntaRequestDTO</param>
+        /// <returns>Lista de PreguntaDTO</returns>
         public async Task<List<PreguntaDTO>> ObtenerPreguntas(PreguntaRequestDTO request)
         {
-            Console.WriteLine($"request: {JsonConvert.SerializeObject(request)}");
             var preguntas = await _preguntaModelo.ObtenerPreguntas(request.CategoriaId, request.DificultadId, request.Cantidad);
-            Console.WriteLine($"preguntas: {JsonConvert.SerializeObject(preguntas)}");
             return preguntas.Select(p => new PreguntaDTO
             {
                 IdPregunta = p.IdPregunta,
@@ -173,6 +218,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             }).ToList();
         }
 
+        /// <summary>
+        /// Verificar pregunta
+        /// </summary>
+        /// <param name="preguntaDTO">Pregunta a verificar</param>
+        /// <returns>PreguntaDTO</returns>
         public async Task<PreguntaDTO> VerificarPregunta(PreguntaDTO preguntaDTO)
         {
             var pregunta = await _preguntaModelo.ObtenerPreguntaConRespuestas(preguntaDTO.IdPregunta);
@@ -190,6 +240,12 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             return preguntaDTO;
         }
 
+        /// <summary>
+        /// Guardar pregunta manual
+        /// </summary>
+        /// <param name="pregunta">Pregunta a guardar</param>
+        /// <param name="api">Enumerable que representa la API</param>
+        /// <returns>Booleano</returns>
         public async Task<bool> GuardarPreguntaManual(PreguntaDTO pregunta, PaginasElegiblesEnum api)
         {
             try {
@@ -227,6 +283,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
             }
         }
 
+        /// <summary>
+        /// Convertir categoría entidad a categoría DTO
+        /// </summary>
+        /// <param name="categoria">Categoría entidad a convertir</param>
+        /// <returns>CategoríaDTO</returns>
         private CategoriaDTO mapearCategoriaEntidadADTO(ECategoria categoria)
         {
             return new CategoriaDTO
@@ -236,6 +297,12 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 WebId = categoria.WebId
             };
         }
+
+        /// <summary>
+        /// Convertir una lista de categorías entidad a categorías DTO
+        /// </summary>
+        /// <param name="categorias">Categorías a convertir</param>
+        /// <returns>Lista de CategoríaDTO</returns>
         private List<CategoriaDTO> MapearListaDeCategoriasEntidadADTO(List<ECategoria> categorias)
         {
             return categorias.Select(categoria => mapearCategoriaEntidadADTO(categoria)).ToList();

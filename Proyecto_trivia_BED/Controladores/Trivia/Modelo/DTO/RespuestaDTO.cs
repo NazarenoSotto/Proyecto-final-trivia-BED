@@ -1,5 +1,8 @@
 namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO
 {
+    /// <summary>
+    /// DTO de Respuesta
+    /// </summary>
     public class RespuestaDTO
     {
         /// <summary>

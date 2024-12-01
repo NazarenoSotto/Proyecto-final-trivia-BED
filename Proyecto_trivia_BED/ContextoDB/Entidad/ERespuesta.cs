@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Proyecto_trivia_BED.ContextoDB.Entidad
 {
+    /// <summary>
+    /// Respuesta de una pregunta
+    /// </summary>
     public class ERespuesta
     {
         /// <summary>
@@ -13,16 +16,16 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         public int IdRespuesta { get; set; }
 
         /// <summary>
-        /// String que define la respuesta
+        /// Define el texto de la respuesta
         /// </summary>
         public string SRespuesta { get; set; }
 
         /// <summary>
-        /// Booleano que define si la respuesta es correcta o no
+        /// Define si la respuesta es correcta o no
         /// </summary>
         public bool Correcta { get; set; }
         /// <summary>
-        /// Posible respuesta a una pregunta
+        /// Instanciar una respuesta
         /// </summary>
         /// <param name="pRespuesta">Texto que define la respuesta</param>
         /// <param name="pCorrecta">Define si es correcta(true) o incorrecta(false)</param>

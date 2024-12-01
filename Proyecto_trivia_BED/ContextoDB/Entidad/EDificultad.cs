@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Proyecto_trivia_BED.ContextoDB.Entidad
 {
+    /// <summary>
+    /// Dificultad de las preguntas
+    /// </summary>
     public class EDificultad
     {
         /// <summary>
@@ -20,15 +23,15 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// </summary>
         public int Valor { get; set; }
         /// <summary>
-        /// Dificultad de la pregunta
+        /// Identificación en la web externa
         /// </summary>
         public int webId { get; set; }
         /// <summary>
-        /// Id de la dificultad en su respectiva web
+        /// Web externa de la dificultad
         /// </summary>
         public PaginasElegiblesEnum externalAPI { get; set; }
         /// <summary>
-        /// Web externa de la dificultad
+        /// Crear una nueva instancia de EDificultad
         /// </summary>
         /// <param name="pNombre">Nombre de la dificultad</param>
         /// <param name="pValor">Valor de la dificultad en puntos</param>

@@ -10,17 +10,29 @@ using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
 {
+    /// <summary>
+    /// Servicio para las funcionalidades de puntaje
+    /// </summary>
     public class PuntajeService : IPuntajeService
     {
         private readonly PuntajeModelo _puntajeModelo;
         private readonly IUsuarioService _usuarioServicio;
-
+        /// <summary>
+        /// Constructor de PuntajeService
+        /// </summary>
+        /// <param name="puntajeModelo">PuntajeModelo</param>
+        /// <param name="usuarioServicio">IUsuarioService</param>
         public PuntajeService(PuntajeModelo puntajeModelo, IUsuarioService usuarioServicio)
         {
             _puntajeModelo = puntajeModelo ?? throw new ArgumentNullException(nameof(puntajeModelo));
             _usuarioServicio = usuarioServicio ?? throw new ArgumentNullException(nameof(usuarioServicio));
         }
 
+        /// <summary>
+        /// Calcular el puntaje del usuario
+        /// </summary>
+        /// <param name="request">CalculoPuntajeDTO</param>
+        /// <returns>PuntajeDTO</returns>
         public PuntajeDTO CalcularPuntaje(CalculoPuntajeDTO request)
         {
             if (request.PreguntasEvaluadas == null || !request.PreguntasEvaluadas.Any())
@@ -68,6 +80,10 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
             };
         }
 
+        /// <summary>
+        /// Obtener la lista de puntajes
+        /// </summary>
+        /// <returns>Lista de PuntajeDTO</returns>
         public async Task<List<PuntajeDTO>> ObtenerTodosLosPuntajes()
         {
             var puntajes = await _puntajeModelo.ObtenerTodosLosPuntajes();

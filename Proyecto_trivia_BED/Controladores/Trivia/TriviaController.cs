@@ -13,6 +13,9 @@ using Proyecto_trivia_BED.ContextoDB.Entidad;
 
 namespace Proyecto_trivia_BED.Controllers
 {
+    /// <summary>
+    /// Controlador para endpoints de la trivia (/trivia)
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class TriviaController : ControllerBase
@@ -22,12 +25,22 @@ namespace Proyecto_trivia_BED.Controllers
 
         private readonly ITriviaService _triviaService;
 
+        /// <summary>
+        /// Constructor de TriviaController
+        /// </summary>
+        /// <param name="logger">ILogger<TriviaController></param>
+        /// <param name="triviaService">ITriviaService</param>
         public TriviaController(ILogger<TriviaController> logger, ITriviaService triviaService )
         {
             _logger = logger;
             _triviaService = triviaService ?? throw new ArgumentNullException(nameof(triviaService));
         }
 
+        /// <summary>
+        /// /obtenerPreguntasDesdeAPI: Obtener preguntas con los parámetros definidos desde la API elegida
+        /// </summary>
+        /// <param name="requestBody">ObtenerPreguntasDesdeAPIRequestDTO</param>
+        /// <returns>Lista de PreguntaDTO</returns>
         [HttpPost("obtenerPreguntasDesdeAPI")]
         public async Task<IActionResult> ObtenerPreguntasDesdeAPI([FromBody] ObtenerPreguntasDesdeAPIRequestDTO requestBody)
         {
@@ -45,6 +58,10 @@ namespace Proyecto_trivia_BED.Controllers
 
         }
 
+        /// <summary>
+        /// /obtenerCategorias: Obtener lista de categorías
+        /// </summary>
+        /// <returns>Lista de CategoriaDTO</returns>
         [HttpGet("obtenerCategorias")]
         public async Task<IActionResult> ObtenerCategorias()
         {
@@ -60,6 +77,10 @@ namespace Proyecto_trivia_BED.Controllers
             }
         }
 
+        /// <summary>
+        /// /obtenerDificultades: Obtener dificultades de las preguntas
+        /// </summary>
+        /// <returns>Lista de DificultadDTO</returns>
         [HttpGet("obtenerDificultades")]
         public async Task<IActionResult> ObtenerDificultades()
         {
@@ -75,6 +96,13 @@ namespace Proyecto_trivia_BED.Controllers
             }
         }
 
+        /// <summary>
+        /// /obtenerPreguntas: Obtener lista de preguntas
+        /// </summary>
+        /// <param name="cantidad">Cantidad de preguntas</param>
+        /// <param name="categoriaId">Id de categoría</param>
+        /// <param name="dificultadId">Id de dificultad</param>
+        /// <returns>Lista de PreguntaDTO</returns>
         [HttpGet("obtenerPreguntas")]
         public async Task<IActionResult> ObtenerPreguntas([FromQuery] int cantidad, [FromQuery] int categoriaId, [FromQuery] int dificultadId)
         {
@@ -90,6 +118,11 @@ namespace Proyecto_trivia_BED.Controllers
             }
         }
 
+        /// <summary>
+        /// /verificarPregunta: Verificar pregunta y sus respuestas
+        /// </summary>
+        /// <param name="preguntaDTO"></param>
+        /// <returns>PreguntaDTO</returns>
         [HttpPost("verificarPregunta")]
         public async Task<IActionResult> VerificarPregunta([FromBody] PreguntaDTO preguntaDTO)
         {
@@ -110,6 +143,11 @@ namespace Proyecto_trivia_BED.Controllers
             }
         }
 
+        /// <summary>
+        /// /agregarPreguntaManual: Agregar pregunta manual
+        /// </summary>
+        /// <param name="pregunta">PreguntaDTO</param>
+        /// <returns></returns>
         [HttpPost("agregarPreguntaManual")]
         public async Task<IActionResult> AgregarPreguntaManual([FromBody] PreguntaDTO pregunta)
         {
@@ -125,12 +163,16 @@ namespace Proyecto_trivia_BED.Controllers
             }
         }
 
+        /// <summary>
+        /// /obtenerCategoriasDesdeAPI: Obtener categorias desde la API
+        /// </summary>
+        /// <param name="requestBody">ObtenerCategoriasDesdeAPIRequestDTO</param>
+        /// <returns>Lista de CategoriaDTO</returns>
         [HttpPost("obtenerCategoriasDesdeAPI")]
         public async Task<IActionResult> ObtenerCategoriasDesdeAPI([FromBody] ObtenerCategoriasDesdeAPIRequestDTO requestBody)
         {
             try
             {
-                _logger.LogInformation($"requestBody.Api: {requestBody.Api.ToString()} aaaa");
                 if (!Enum.IsDefined(typeof(PaginasElegiblesEnum), requestBody.Api)) {
                     throw new ArgumentException("Valor inválido en 'api'");
                 }
@@ -140,6 +182,7 @@ namespace Proyecto_trivia_BED.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Hubo un problema al obtener las categorias: {ex.Message}");
                 return StatusCode(500, new { message = "Hubo un problema al obtener las categorias.", details = ex.Message });
             }
 

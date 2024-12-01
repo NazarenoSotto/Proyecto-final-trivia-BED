@@ -18,12 +18,21 @@ using static Proyecto_trivia_BED.Controladores.Trivia.API.DTO.OpenTDBResponseDTO
 
 namespace Proyecto_trivia_BED.Controladores.Trivia.API
 {
+    /// <summary>
+    /// Adapter para utilizar la API de OpenTDB
+    /// </summary>
     public class OpenTDBAPI : ITriviaAPIAdapter
     {
         private static HttpClient _httpClient;
         private static CategoriaModelo _categoriaModelo;
         private static DificultadModelo _dificultadModelo;
 
+        /// <summary>
+        /// Constructor de OpenTDBAPI
+        /// </summary>
+        /// <param name="configuration">IConfiguration</param>
+        /// <param name="categoriaModelo">CategoriaModelo</param>
+        /// <param name="dificultadModelo">DificultadModelo</param>
         public OpenTDBAPI(IConfiguration configuration, CategoriaModelo categoriaModelo, DificultadModelo dificultadModelo)
         {
             _httpClient = new HttpClient();
@@ -32,6 +41,13 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
             _dificultadModelo = dificultadModelo;
         }
 
+        /// <summary>
+        /// Genera la url para obtener las preguntas con los parámetros requeridos
+        /// </summary>
+        /// <param name="pCantidad">Cantidad de preguntas</param>
+        /// <param name="pCategoriaId">Id de categoría de las preguntas</param>
+        /// <param name="pDificultadId">Id de dificultad</param>
+        /// <returns>string</returns>
         private static async Task<string> GenerarUrlAsync(int pCantidad, int? pCategoriaId, int? pDificultadId)
         {
             string baseEndpoint = "/api.php?";
@@ -70,6 +86,10 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
             return $"{baseEndpoint}{string.Join("&", parametros)}";
         }
 
+        /// <summary>
+        /// Obtener categorías desde la  API
+        /// </summary>
+        /// <returns>Lista de ECategoría</returns>
         public async Task<List<ECategoria>> ObtenerCategoriasAsync()
         {
             string baseEndpoint = "/api_category.php";
@@ -103,6 +123,13 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
             }
         }
 
+        /// <summary>
+        /// Obtener preguntas desde la API
+        /// </summary>
+        /// <param name="cantidad">Cantidad de preguntas a obtener</param>
+        /// <param name="categoriaId">Categoría de las preguntas</param>
+        /// <param name="dificultadId">Dificultades de las preguntas</param>
+        /// <returns>Lista de preguntas</returns>
         public async Task<List<EPregunta>> ObtenerPreguntasAsync(int pCantidad, int? pCategoriaId, int? pDificultadId)
         {
             string requestUrl = await GenerarUrlAsync(pCantidad, pCategoriaId, pDificultadId);

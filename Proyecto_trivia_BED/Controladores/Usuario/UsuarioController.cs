@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Controllers
 {
+    /// <summary>
+    /// Controlador para endpoints de usuario (/usuario)
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class UsuarioController : ControllerBase
@@ -14,13 +17,22 @@ namespace Proyecto_trivia_BED.Controllers
         private readonly ILogger<UsuarioController> _logger;
         private readonly IUsuarioService _usuarioService;
 
+        /// <summary>
+        /// Constructor de UsuarioController
+        /// </summary>
+        /// <param name="logger">ILogger<UsuarioController></param>
+        /// <param name="usuarioService">IUsuarioService</param>
         public UsuarioController(ILogger<UsuarioController> logger, IUsuarioService usuarioService)
         {
             _logger = logger;
             _usuarioService = usuarioService ?? throw new ArgumentNullException(nameof(usuarioService));
         }
 
-
+        /// <summary>
+        /// /crear: Crear/Registrar un nuevo usuario
+        /// </summary>
+        /// <param name="usuarioDTO">UsuarioDTO</param>
+        /// <returns>UsuarioDTO</returns>
         [HttpPost("crear")]
         public IActionResult CrearUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
@@ -47,6 +59,11 @@ namespace Proyecto_trivia_BED.Controllers
             }
         }
 
+        /// <summary>
+        /// /autenticar: Autenticar a un usuario
+        /// </summary>
+        /// <param name="usuarioDTO">UsuarioDTO</param>
+        /// <returns>UsuarioDTO</returns>
         [HttpPost("autenticar")]
         public IActionResult AutenticarUsuario([FromBody] UsuarioDTO usuarioDTO)
         {

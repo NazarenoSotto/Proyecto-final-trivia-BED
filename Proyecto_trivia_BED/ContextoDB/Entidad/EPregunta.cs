@@ -9,10 +9,6 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
     /// </summary>
     public class EPregunta
     {
-        //private int iIdPregunta;
-        //private string iLaPregunta;
-        //private string iReferencias;
-        //private IList<string> iRespInc;
         /// <summary>
         /// Identificador de la pregunta
         /// </summary>

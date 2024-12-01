@@ -8,15 +8,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo
 {
+    /// <summary>
+    /// Clase modelo de puntaje
+    /// </summary>
     public class PuntajeModelo
     {
         private readonly TriviaContext _context;
 
+        /// <summary>
+        /// Constructor de PuntajeModelo
+        /// </summary>
+        /// <param name="context">TriviaContext</param>
         public PuntajeModelo(TriviaContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        /// <summary>
+        /// Guardar un puntaje en la base de datos
+        /// </summary>
+        /// <param name="puntaje">Puntaje a guardar</param>
+        /// <returns></returns>
         public EPuntaje GuardarPuntaje(EPuntaje puntaje)
         {
             if (puntaje == null)
@@ -30,6 +42,10 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo
             return puntaje;
         }
 
+        /// <summary>
+        /// Obtener todos los puntajes de manera descendente
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<EPuntaje>> ObtenerTodosLosPuntajes()
         {
             return await _context.Puntajes

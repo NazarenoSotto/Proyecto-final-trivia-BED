@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO
 {
+    /// <summary>
+    /// DTO de Pregunta
+    /// </summary>
     public class PreguntaDTO
     {
         public int IdPregunta { get; set; }
