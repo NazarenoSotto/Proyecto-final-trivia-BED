@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Proyecto_trivia_BED.Controladores.Usuario.Modelo;
-using Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CUsuario.Modelo;
+using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
 using System;
 using System.Threading.Tasks;
 

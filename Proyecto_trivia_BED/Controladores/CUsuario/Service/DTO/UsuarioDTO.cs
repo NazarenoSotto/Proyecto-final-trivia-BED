@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO
+namespace Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO
 {
     /// <summary>
     /// DTO de usuario

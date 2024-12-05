@@ -1,7 +1,7 @@
 ﻿using Proyecto_trivia_BED.ContextoDB.Entidad;
-using Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
 
-namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
+namespace Proyecto_trivia_BED.Controladores.CUsuario.Modelo
 {
     public interface IUsuarioService
     {
@@ -21,8 +21,8 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         /// Obtener un usuario por Id
         /// </summary>
         /// <param name="idUsuario">Id del usuario</param>
-        /// <returns>EUsuario</returns>
-        EUsuario ObtenerUsuarioPorId(int idUsuario);
+        /// <returns>Usuario</returns>
+        ContextoDB.Entidad.Usuario ObtenerUsuarioPorId(int idUsuario);
         /// <summary>
         /// Autenticar al usuario con su nombre y contraseña
         /// </summary>

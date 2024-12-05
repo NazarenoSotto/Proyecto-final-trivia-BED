@@ -1,4 +1,4 @@
-﻿using Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO;
+﻿using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
 using System;
 
 namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO

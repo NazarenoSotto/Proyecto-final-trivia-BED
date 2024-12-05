@@ -7,7 +7,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
     /// <summary>
     /// Usuario de la trivia
     /// </summary>
-    public class EUsuario
+    public class Usuario
     {
         /// <summary>
         /// Identificador del usuario
@@ -34,12 +34,12 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// </summary>
         /// <param name="pNombre">Nombre del usuario</param>
         /// <param name="pPassword">Contraseña del usuario</param>
-        public EUsuario(string pNombre, string pPassword)
+        public Usuario(string pNombre, string pPassword)
         {
             NombreUsuario = pNombre;
             Password = pPassword;
         }
 
-        public EUsuario() { }
+        public Usuario() { }
     }
 }

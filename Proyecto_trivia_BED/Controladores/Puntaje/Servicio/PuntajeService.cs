@@ -1,9 +1,9 @@
 ﻿using Proyecto_trivia_BED.ContextoDB.Entidad;
 using Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO;
 using Proyecto_trivia_BED.Controladores.Puntaje.Modelo;
-using Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
 using System;
-using Proyecto_trivia_BED.Controladores.Usuario.Modelo;
+using Proyecto_trivia_BED.Controladores.CUsuario.Modelo;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

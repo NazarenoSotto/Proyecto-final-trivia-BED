@@ -3,7 +3,7 @@ using Proyecto_trivia_BED.ContextoDB.Entidad;
 using System;
 using System.Linq;
 
-namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
+namespace Proyecto_trivia_BED.Controladores.CUsuario.Modelo
 {
     /// <summary>
     /// Clase modelo de usuario
@@ -36,7 +36,7 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         /// </summary>
         /// <param name="usuario">Usuario a agregar</param>
         /// <returns></returns>
-        public EUsuario AgregarUsuario(EUsuario usuario)
+        public ContextoDB.Entidad.Usuario AgregarUsuario(ContextoDB.Entidad.Usuario usuario)
         {
             if (usuario == null)
                 throw new ArgumentNullException(nameof(usuario));
@@ -51,7 +51,7 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         /// </summary>
         /// <param name="nombreUsuario">Nombre de usuario</param>
         /// <returns></returns>
-        public EUsuario ObtenerUsuarioPorNombre(string nombreUsuario)
+        public ContextoDB.Entidad.Usuario ObtenerUsuarioPorNombre(string nombreUsuario)
         {
             return _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == nombreUsuario);
         }
@@ -61,7 +61,7 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         /// </summary>
         /// <param name="idUsuario">Id del usuario</param>
         /// <returns></returns>
-        public EUsuario ObtenerUsuarioPorId(int idUsuario)
+        public ContextoDB.Entidad.Usuario ObtenerUsuarioPorId(int idUsuario)
         {
             return _context.Usuarios.Find(idUsuario);
         }

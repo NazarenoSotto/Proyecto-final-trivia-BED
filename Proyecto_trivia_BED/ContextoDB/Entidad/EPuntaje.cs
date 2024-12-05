@@ -17,7 +17,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// <summary>
         /// Usuario relacionado al puntaje
         /// </summary>
-        public EUsuario Usuario { get; set; }
+        public Usuario Usuario { get; set; }
         /// <summary>
         /// Valor del puntaje
         /// </summary>
@@ -38,7 +38,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// <param name="pValor">Valor del puntaje</param>
         /// <param name="pFecha">Fecha de obtención del puntaje</param>
         /// <param name="pTiempo">Tiempo de resolución de la trivia</param>
-        public EPuntaje(EUsuario pUsuario, float pValor, DateTime pFecha, int pTiempo)
+        public EPuntaje(Usuario pUsuario, float pValor, DateTime pFecha, int pTiempo)
         {
             Usuario = pUsuario;
             ValorPuntaje = pValor;

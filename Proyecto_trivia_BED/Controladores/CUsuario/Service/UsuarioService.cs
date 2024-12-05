@@ -1,23 +1,27 @@
-﻿using Proyecto_trivia_BED.ContextoDB.Entidad;
-using Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO;
+﻿using Proyecto_trivia_BED.ContextoDB;
+using Proyecto_trivia_BED.ContextoDB.Entidad;
+using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
+using Proyecto_trivia_BED.Repository;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
+namespace Proyecto_trivia_BED.Controladores.CUsuario.Modelo
 {
     /// <summary>
     /// Servicio para las funcionalidades de usuario
     /// </summary>
     public class UsuarioService : IUsuarioService
     {
-        private readonly UsuarioModelo _usuarioModelo;
+        private readonly EntityRepository<Usuario> _usuarioRepositorio;
 
         /// <summary>
         /// Constructor de UsuarioService
         /// </summary>
-        /// <param name="usuarioModelo">UsuarioModelo</param>
-        public UsuarioService(UsuarioModelo usuarioModelo)
+        /// <param name="usuarioRepositorio">EntityRepository<ContextoDB.Entidad.Usuario></param>
+        public UsuarioService(EntityRepository<Usuario> usuarioRepositorio)
         {
-            _usuarioModelo = usuarioModelo ?? throw new ArgumentNullException(nameof(usuarioModelo));
+            _usuarioRepositorio = usuarioRepositorio ?? throw new ArgumentNullException(nameof(usuarioRepositorio));
         }
 
         /// <summary>
@@ -25,12 +29,12 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         /// </summary>
         /// <param name="usuarioDTO">Usuario a agregar</param>
         /// <returns>UsuarioDTO</returns>
-        public UsuarioDTO AgregarUsuario(UsuarioDTO usuarioDTO)
+        public async Task<UsuarioDTO> AgregarUsuario(UsuarioDTO usuarioDTO)
         {
             if (usuarioDTO == null)
                 throw new ArgumentNullException(nameof(usuarioDTO));
-
-            if (_usuarioModelo.NombreUsuarioExistente(usuarioDTO.NombreUsuario))
+            IEnumerable<Usuario> usuarioExistenteEnumerable = await _usuarioRepositorio.GetAsync(usuario => usuario.NombreUsuario == usuarioDTO.NombreUsuario);
+            if (usuarioExistenteList.)
                 throw new InvalidOperationException("El nombre de usuario ya existe.");
 
             usuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
@@ -46,7 +50,7 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         /// </summary>
         /// <param name="usuario">usuario entidad a convertir</param>
         /// <returns>UsuarioDTO</returns>
-        private UsuarioDTO ConvertirADTO(EUsuario usuario)
+        private UsuarioDTO ConvertirADTO(ContextoDB.Entidad.Usuario usuario)
         {
             if (usuario == null) return null;
 
@@ -63,12 +67,12 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         /// Convertir usuario DTO a usuario entidad
         /// </summary>
         /// <param name="usuarioDTO">Usuario DTO a convertir</param>
-        /// <returns>EUsuario</returns>
-        private EUsuario ConvertirAEntidad(UsuarioDTO usuarioDTO)
+        /// <returns>Usuario</returns>
+        private ContextoDB.Entidad.Usuario ConvertirAEntidad(UsuarioDTO usuarioDTO)
         {
             if (usuarioDTO == null) return null;
 
-            return new EUsuario
+            return new ContextoDB.Entidad.Usuario
             {
                 IdUsuario = usuarioDTO.IdUsuario,
                 NombreUsuario = usuarioDTO.NombreUsuario,
@@ -95,8 +99,8 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         /// Obtener usuario por nombre
         /// </summary>
         /// <param name="nombreUsuario">Nombre del usuario</param>
-        /// <returns>EUsuario</returns>
-        private EUsuario ObtenerUsuarioPorNombre(string nombreUsuario)
+        /// <returns>Usuario</returns>
+        private ContextoDB.Entidad.Usuario ObtenerUsuarioPorNombre(string nombreUsuario)
         {
             return _usuarioModelo.ObtenerUsuarioPorNombre(nombreUsuario);
         }
@@ -116,8 +120,8 @@ namespace Proyecto_trivia_BED.Controladores.Usuario.Modelo
         /// Obtener un usuario por Id
         /// </summary>
         /// <param name="idUsuario">Id del usuario</param>
-        /// <returns>EUsuario</returns>
-        public EUsuario ObtenerUsuarioPorId(int idUsuario)
+        /// <returns>Usuario</returns>
+        public ContextoDB.Entidad.Usuario ObtenerUsuarioPorId(int idUsuario)
         {
             return _usuarioModelo.ObtenerUsuarioPorId(idUsuario);
         }

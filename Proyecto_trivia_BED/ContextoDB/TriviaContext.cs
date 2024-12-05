@@ -14,7 +14,7 @@ namespace Proyecto_trivia_BED.ContextoDB
         public DbSet<ERespuesta> Respuestas { get; set; }
         public DbSet<ECategoria> Categorias { get; set; }
         public DbSet<EDificultad> Dificultades { get; set; }
-        public DbSet<EUsuario> Usuarios { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<EPuntaje> Puntajes { get; set; }
 
         /// <summary>

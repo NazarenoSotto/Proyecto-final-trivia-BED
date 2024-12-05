@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO;
-using Proyecto_trivia_BED.Controladores.Usuario.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
 
 namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO
 {

@@ -164,7 +164,7 @@ namespace Proyecto_trivia_BED.Migrations
                     b.ToTable("Respuestas");
                 });
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.EUsuario", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Usuario", b =>
                 {
                     b.Property<int>("IdUsuario")
                         .ValueGeneratedOnAdd()
@@ -202,7 +202,7 @@ namespace Proyecto_trivia_BED.Migrations
 
             modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.EPuntaje", b =>
                 {
-                    b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.EUsuario", "Usuario")
+                    b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioIdUsuario");
 
