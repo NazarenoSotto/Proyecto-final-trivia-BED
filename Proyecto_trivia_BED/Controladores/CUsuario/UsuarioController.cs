@@ -34,7 +34,7 @@ namespace Proyecto_trivia_BED.Controllers
         /// <param name="usuarioDTO">UsuarioDTO</param>
         /// <returns>UsuarioDTO</returns>
         [HttpPost("crear")]
-        public IActionResult CrearUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> CrearUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
             if (usuarioDTO == null)
             {
@@ -44,12 +44,12 @@ namespace Proyecto_trivia_BED.Controllers
 
             try
             {
-                if (_usuarioService.NombreUsuarioExistente(usuarioDTO.NombreUsuario))
+                if (await _usuarioService.NombreUsuarioExistente(usuarioDTO.NombreUsuario))
                 {
                     return Conflict("El nombre de usuario ya existe.");
                 }
 
-                var nuevoUsuario = _usuarioService.AgregarUsuario(usuarioDTO);
+                var nuevoUsuario = await _usuarioService.AgregarUsuario(usuarioDTO);
                 return Ok(nuevoUsuario);
             }
             catch (Exception ex)
@@ -65,7 +65,7 @@ namespace Proyecto_trivia_BED.Controllers
         /// <param name="usuarioDTO">UsuarioDTO</param>
         /// <returns>UsuarioDTO</returns>
         [HttpPost("autenticar")]
-        public IActionResult AutenticarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> AutenticarUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
             if (usuarioDTO == null || string.IsNullOrWhiteSpace(usuarioDTO.NombreUsuario) || string.IsNullOrWhiteSpace(usuarioDTO.Password))
             {
@@ -75,7 +75,7 @@ namespace Proyecto_trivia_BED.Controllers
 
             try
             {
-                var usuarioAutenticado = _usuarioService.AutenticarUsuario(usuarioDTO);
+                var usuarioAutenticado = await _usuarioService.AutenticarUsuario(usuarioDTO);
 
                 if (usuarioAutenticado == null)
                 {

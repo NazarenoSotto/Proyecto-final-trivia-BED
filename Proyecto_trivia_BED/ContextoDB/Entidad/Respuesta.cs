@@ -7,7 +7,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
     /// <summary>
     /// Respuesta de una pregunta
     /// </summary>
-    public class ERespuesta
+    public class Respuesta
     {
         /// <summary>
         /// Identificador de la respuesta
@@ -29,13 +29,13 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// </summary>
         /// <param name="pRespuesta">Texto que define la respuesta</param>
         /// <param name="pCorrecta">Define si es correcta(true) o incorrecta(false)</param>
-        public ERespuesta(string pRespuesta, bool pCorrecta)
+        public Respuesta(string pRespuesta, bool pCorrecta)
         {
             SRespuesta = pRespuesta;
             Correcta = pCorrecta;
         }
 
-        public ERespuesta() { }
+        public Respuesta() { }
 
     }
 }

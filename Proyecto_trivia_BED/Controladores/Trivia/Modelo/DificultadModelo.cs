@@ -30,7 +30,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// <param name="dificultadNombre">Nombre de la dificultad</param>
         /// <param name="externalWeb">Enum que identifica la API externa de la dificultad</param>
         /// <returns></returns>
-        public async Task<EDificultad> ObtenerDificultadPorNombreAsync(string dificultadNombre, PaginasElegiblesEnum externalWeb)
+        public async Task<Dificultad> ObtenerDificultadPorNombreAsync(string dificultadNombre, PaginasElegiblesEnum externalWeb)
         {
             return await _context.Dificultades.FirstOrDefaultAsync(dif => dif.NombreDificultad == dificultadNombre && dif.externalAPI == externalWeb);
         }
@@ -40,7 +40,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// </summary>
         /// <param name="dificultadId">Id de la dificultad</param>
         /// <returns></returns>
-        public async Task<EDificultad> ObtenerDificultadPorId(int dificultadId)
+        public async Task<Dificultad> ObtenerDificultadPorId(int dificultadId)
         {
             return await _context.Dificultades.FirstOrDefaultAsync(dif => dif.IdDificultad == dificultadId);
         }
@@ -49,8 +49,8 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// Obtener todas las dificultades de una API
         /// </summary>
         /// <param name="api">Enum que identifica la API externa de la dificultad</param>
-        /// <returns>Lista de EDificultad</returns>
-        public async Task<List<EDificultad>> ObtenerDificultadesAsync(PaginasElegiblesEnum api)
+        /// <returns>Lista de Dificultad</returns>
+        public async Task<List<Dificultad>> ObtenerDificultadesAsync(PaginasElegiblesEnum api)
         {
             return await _context.Dificultades.Where(d => d.externalAPI == api).ToListAsync();
         }

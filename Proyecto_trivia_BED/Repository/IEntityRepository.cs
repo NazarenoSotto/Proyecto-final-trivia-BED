@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Repository
 {
-    interface IEntityRepository<T> where T : class
+    public interface IEntityRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync();
 

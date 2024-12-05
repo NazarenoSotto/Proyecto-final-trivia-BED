@@ -10,12 +10,12 @@ namespace Proyecto_trivia_BED.ContextoDB
     {
         public TriviaContext(DbContextOptions<TriviaContext> options) : base(options) { }
 
-        public DbSet<EPregunta> Preguntas { get; set; }
-        public DbSet<ERespuesta> Respuestas { get; set; }
-        public DbSet<ECategoria> Categorias { get; set; }
-        public DbSet<EDificultad> Dificultades { get; set; }
+        public DbSet<Pregunta> Preguntas { get; set; }
+        public DbSet<Respuesta> Respuestas { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Dificultad> Dificultades { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<EPuntaje> Puntajes { get; set; }
+        public DbSet<Puntaje> Puntajes { get; set; }
 
         /// <summary>
         /// Seed de inicialización de datos
@@ -26,10 +26,10 @@ namespace Proyecto_trivia_BED.ContextoDB
             base.OnModelCreating(modelBuilder);
 
             // Ejemplo de seed data para la entidad `Pregunta`
-            modelBuilder.Entity<EDificultad>().HasData(
-                new EDificultad { IdDificultad = 1, NombreDificultad = "easy", Valor = 1, webId = 1, externalAPI = PaginasElegiblesEnum.OpenTDB },
-                new EDificultad { IdDificultad = 2, NombreDificultad = "medium", Valor = 3, webId = 3, externalAPI = PaginasElegiblesEnum.OpenTDB },
-                new EDificultad { IdDificultad = 3, NombreDificultad = "hard", Valor = 5, webId = 5, externalAPI = PaginasElegiblesEnum.OpenTDB }
+            modelBuilder.Entity<Dificultad>().HasData(
+                new Dificultad { IdDificultad = 1, NombreDificultad = "easy", Valor = 1, webId = 1, externalAPI = PaginasElegiblesEnum.OpenTDB },
+                new Dificultad { IdDificultad = 2, NombreDificultad = "medium", Valor = 3, webId = 3, externalAPI = PaginasElegiblesEnum.OpenTDB },
+                new Dificultad { IdDificultad = 3, NombreDificultad = "hard", Valor = 5, webId = 5, externalAPI = PaginasElegiblesEnum.OpenTDB }
             );
 
         }

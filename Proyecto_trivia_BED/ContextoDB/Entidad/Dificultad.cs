@@ -7,7 +7,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
     /// <summary>
     /// Dificultad de las preguntas
     /// </summary>
-    public class EDificultad
+    public class Dificultad
     {
         /// <summary>
         /// Identificador de la dificultad
@@ -31,16 +31,16 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// </summary>
         public PaginasElegiblesEnum externalAPI { get; set; }
         /// <summary>
-        /// Crear una nueva instancia de EDificultad
+        /// Crear una nueva instancia de Dificultad
         /// </summary>
         /// <param name="pNombre">Nombre de la dificultad</param>
         /// <param name="pValor">Valor de la dificultad en puntos</param>
-        public EDificultad(string pNombre, int pValor)
+        public Dificultad(string pNombre, int pValor)
         {
             NombreDificultad = pNombre;
             Valor = pValor;
         }
 
-        public EDificultad() { }
+        public Dificultad() { }
     }
 }

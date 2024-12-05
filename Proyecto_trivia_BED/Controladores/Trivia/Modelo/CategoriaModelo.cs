@@ -38,7 +38,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// </summary>
         /// <param name="categoria">Categoría a agregar</param>
         /// <returns>ECategoría</returns>
-        public async Task<ECategoria> AgregarCategoriaAsync(ECategoria categoria)
+        public async Task<Categoria> AgregarCategoriaAsync(Categoria categoria)
         {
             if (categoria == null)
                 throw new ArgumentNullException(nameof(categoria));
@@ -54,7 +54,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// <param name="categoriaNombre">Nombre de la categoría</param>
         /// <param name="externalWeb">Web externa de la categoría</param>
         /// <returns>ECategoría</returns>
-        public async Task<ECategoria> obtenerCategoriaPorNombreAsync(string categoriaNombre, PaginasElegiblesEnum externalWeb)
+        public async Task<Categoria> obtenerCategoriaPorNombreAsync(string categoriaNombre, PaginasElegiblesEnum externalWeb)
         {
             return await _context.Categorias.FirstOrDefaultAsync(cat => cat.NombreCategoria == categoriaNombre && cat.externalAPI == externalWeb);
         }
@@ -64,7 +64,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// </summary>
         /// <param name="categoriaId">Id de la categoría</param>
         /// <returns>ECategoría</returns>
-        public async Task<ECategoria> obtenerCategoriaPorIdAsync(int categoriaId)
+        public async Task<Categoria> obtenerCategoriaPorIdAsync(int categoriaId)
         {
             return await _context.Categorias.FirstOrDefaultAsync(cat => cat.IdCategoria == categoriaId);
         }
@@ -74,7 +74,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// </summary>
         /// <param name="api">Enum que identifica la API externa de las categoría</param>
         /// <returns>Lista de ECategoría</returns>
-        public async Task<List<ECategoria>> ObtenerCategoriasAsync(PaginasElegiblesEnum api)
+        public async Task<List<Categoria>> ObtenerCategoriasAsync(PaginasElegiblesEnum api)
         {
             return await _context.Categorias.Where(c => c.externalAPI == api).ToListAsync();
         }
@@ -83,8 +83,8 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// Guardar múltiples categorías
         /// </summary>
         /// <param name="categorias">Categorías a guardar</param>
-        /// <returns>Lista de ECategoria</returns>
-        public async Task<List<ECategoria>> GuardarCategoriasAsync(List<ECategoria> categorias)
+        /// <returns>Lista de Categoria</returns>
+        public async Task<List<Categoria>> GuardarCategoriasAsync(List<Categoria> categorias)
         {
             try
             {

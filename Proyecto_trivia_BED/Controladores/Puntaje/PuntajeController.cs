@@ -1,9 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO;
 using Proyecto_trivia_BED.Controladores.Puntaje.Servicio;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Proyecto_trivia_BED.Controllers
 {
@@ -16,11 +17,12 @@ namespace Proyecto_trivia_BED.Controllers
     {
         private readonly IPuntajeService _puntajeService;
         private readonly ILogger<PuntajeController> _logger;
+
         /// <summary>
-        /// Constructor de puntajeController
+        /// Constructor de PuntajeController
         /// </summary>
         /// <param name="puntajeService">IPuntajeService</param>
-        /// <param name="puntajeService">ILogger<PuntajeController></param>
+        /// <param name="logger">ILogger<PuntajeController></param>
         public PuntajeController(IPuntajeService puntajeService, ILogger<PuntajeController> logger)
         {
             _puntajeService = puntajeService ?? throw new ArgumentNullException(nameof(puntajeService));
@@ -28,12 +30,12 @@ namespace Proyecto_trivia_BED.Controllers
         }
 
         /// <summary>
-        /// /calcular: calcular el puntaje del usuario
+        /// /calcular: Calcular el puntaje del usuario
         /// </summary>
-        /// <param name="request">body: CalculoPuntajeDTO</param>
+        /// <param name="request">Datos necesarios para el cálculo</param>
         /// <returns>PuntajeDTO</returns>
         [HttpPost("calcular")]
-        public IActionResult CalcularPuntaje([FromBody] CalculoPuntajeDTO request)
+        public async Task<IActionResult> CalcularPuntaje([FromBody] CalculoPuntajeDTO request)
         {
             if (request == null)
             {
@@ -42,18 +44,18 @@ namespace Proyecto_trivia_BED.Controllers
 
             try
             {
-                var puntaje = _puntajeService.CalcularPuntaje(request);
+                var puntaje = await _puntajeService.CalcularPuntaje(request);
                 return Ok(puntaje);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al calcular el puntaje: ${ex.Message}");
+                _logger.LogError($"Error al calcular el puntaje: {ex.Message}");
                 return StatusCode(500, $"Error al calcular el puntaje: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// /obtener: Obtener lista de puntajes de manera descendente
+        /// /obtener: Obtener lista de puntajes
         /// </summary>
         /// <returns>Lista de PuntajeDTO</returns>
         [HttpGet("obtener")]
@@ -66,7 +68,7 @@ namespace Proyecto_trivia_BED.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al obtener los puntajes: ${ex.Message}");
+                _logger.LogError($"Error al obtener los puntajes: {ex.Message}");
                 return StatusCode(500, $"Error al obtener los puntajes: {ex.Message}");
             }
         }

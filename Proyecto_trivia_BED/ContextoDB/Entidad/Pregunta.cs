@@ -7,7 +7,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
     /// <summary>
     /// Pregunta
     /// </summary>
-    public class EPregunta
+    public class Pregunta
     {
         /// <summary>
         /// Identificador de la pregunta
@@ -21,15 +21,15 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// <summary>
         /// Categoría a la que pertenece la pregunta
         /// </summary>
-        public ECategoria Categoria { get; set; }
+        public Categoria Categoria { get; set; }
         /// <summary>
         /// Dificultad de la pregunta
         /// </summary>
-        public EDificultad Dificultad { get; set; }
+        public Dificultad Dificultad { get; set; }
         /// <summary>
         /// Respuestas incorrectas
         /// </summary>
-        public IList<ERespuesta> Respuestas { get; set; }
+        public IList<Respuesta> Respuestas { get; set; }
 
         /// <summary>
         /// Una pregunta
@@ -39,7 +39,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// <param name="pDif">Dificultad de la pregunta</param>
         /// <param name="pRespIncorrectas">Lista de respuestas incorrectas</param>
         /// <param name="pRespCorrecta">La respuesta correcta</param>
-        public EPregunta(string pPregunta, ECategoria pCategoria, EDificultad pDif, IList<ERespuesta> pRespuestas)
+        public Pregunta(string pPregunta, Categoria pCategoria, Dificultad pDif, IList<Respuesta> pRespuestas)
         {
             LaPregunta = pPregunta;
             Categoria = pCategoria;
@@ -47,6 +47,6 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
             Respuestas = pRespuestas;
         }
 
-        public EPregunta() { }
+        public Pregunta() { }
     }
 }

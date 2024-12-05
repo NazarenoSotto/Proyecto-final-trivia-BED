@@ -18,12 +18,12 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API.DTO
         /// <param name="categoriaId">Categoría de las preguntas</param>
         /// <param name="dificultadId">Dificultades de las preguntas</param>
         /// <returns>Lista de preguntas</returns>
-        public Task<List<EPregunta>> ObtenerPreguntasAsync(int cantidad, int? categoriaId, int? dificultadId);
+        public Task<List<Pregunta>> ObtenerPreguntasAsync(int cantidad, int? categoriaId, int? dificultadId);
         
         /// <summary>
         /// Obtener categorías desde la  API
         /// </summary>
         /// <returns>Lista de ECategoría</returns>
-        public Task<List<ECategoria>> ObtenerCategoriasAsync();
+        public Task<List<Categoria>> ObtenerCategoriasAsync();
     }
 }

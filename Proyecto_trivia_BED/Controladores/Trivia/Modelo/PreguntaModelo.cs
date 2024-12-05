@@ -29,7 +29,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// </summary>
         /// <param name="preguntas">Preguntas a guardar</param>
         /// <returns></returns>
-        public async Task<List<EPregunta>> GuardarPreguntas(List<EPregunta> preguntas)
+        public async Task<List<Pregunta>> GuardarPreguntas(List<Pregunta> preguntas)
         {
             try {
 
@@ -62,7 +62,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// <param name="dificultadId">Dificultad de las preguntas</param>
         /// <param name="cantidad">Cantidad de preguntas</param>
         /// <returns></returns>
-        public async Task<List<EPregunta>> ObtenerPreguntas(int categoriaId, int dificultadId, int cantidad)
+        public async Task<List<Pregunta>> ObtenerPreguntas(int categoriaId, int dificultadId, int cantidad)
         {
             return await _context.Preguntas
                 .Where(p => p.Categoria.IdCategoria == categoriaId &&
@@ -78,8 +78,8 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// Obtener una pregunta por Id con sus respuestas
         /// </summary>
         /// <param name="preguntaId">Id de la pregunta</param>
-        /// <returns>EPregunta</returns>
-        public async Task<EPregunta> ObtenerPreguntaConRespuestas(int preguntaId)
+        /// <returns>Pregunta</returns>
+        public async Task<Pregunta> ObtenerPreguntaConRespuestas(int preguntaId)
         {
             return await _context.Preguntas
                 .Include(p => p.Respuestas)
@@ -90,7 +90,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo
         /// </summary>
         /// <param name="pregunta">Pregunta a guardar</param>
         /// <returns></returns>
-        public async Task GuardarPregunta(EPregunta pregunta)
+        public async Task GuardarPregunta(Pregunta pregunta)
         {
             await _context.Preguntas.AddAsync(pregunta);
             _context.SaveChanges();

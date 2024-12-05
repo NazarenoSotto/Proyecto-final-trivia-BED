@@ -29,7 +29,7 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo
         /// </summary>
         /// <param name="puntaje">Puntaje a guardar</param>
         /// <returns></returns>
-        public EPuntaje GuardarPuntaje(EPuntaje puntaje)
+        public ContextoDB.Entidad.Puntaje GuardarPuntaje(ContextoDB.Entidad.Puntaje puntaje)
         {
             if (puntaje == null)
             {
@@ -46,7 +46,7 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo
         /// Obtener todos los puntajes de manera descendente
         /// </summary>
         /// <returns></returns>
-        public async Task<List<EPuntaje>> ObtenerTodosLosPuntajes()
+        public async Task<List<ContextoDB.Entidad.Puntaje>> ObtenerTodosLosPuntajes()
         {
             return await _context.Puntajes
                 .Include(p => p.Usuario)

@@ -19,7 +19,7 @@ namespace Proyecto_trivia_BED.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.ECategoria", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Categoria", b =>
                 {
                     b.Property<int>("IdCategoria")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace Proyecto_trivia_BED.Migrations
                     b.ToTable("Categorias");
                 });
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.EDificultad", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Dificultad", b =>
                 {
                     b.Property<int>("IdDificultad")
                         .ValueGeneratedOnAdd()
@@ -90,7 +90,7 @@ namespace Proyecto_trivia_BED.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.EPregunta", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Pregunta", b =>
                 {
                     b.Property<int>("IdPregunta")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace Proyecto_trivia_BED.Migrations
                     b.ToTable("Preguntas");
                 });
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.EPuntaje", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Puntaje", b =>
                 {
                     b.Property<int>("IdPuntaje")
                         .ValueGeneratedOnAdd()
@@ -141,7 +141,7 @@ namespace Proyecto_trivia_BED.Migrations
                     b.ToTable("Puntajes");
                 });
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.ERespuesta", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Respuesta", b =>
                 {
                     b.Property<int>("IdRespuesta")
                         .ValueGeneratedOnAdd()
@@ -185,13 +185,13 @@ namespace Proyecto_trivia_BED.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.EPregunta", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Pregunta", b =>
                 {
-                    b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.ECategoria", "Categoria")
+                    b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.Categoria", "Categoria")
                         .WithMany()
                         .HasForeignKey("CategoriaIdCategoria");
 
-                    b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.EDificultad", "Dificultad")
+                    b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.Dificultad", "Dificultad")
                         .WithMany()
                         .HasForeignKey("DificultadIdDificultad");
 
@@ -200,7 +200,7 @@ namespace Proyecto_trivia_BED.Migrations
                     b.Navigation("Dificultad");
                 });
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.EPuntaje", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Puntaje", b =>
                 {
                     b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.Usuario", "Usuario")
                         .WithMany()
@@ -209,14 +209,14 @@ namespace Proyecto_trivia_BED.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.ERespuesta", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Respuesta", b =>
                 {
-                    b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.EPregunta", null)
+                    b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.Pregunta", null)
                         .WithMany("Respuestas")
                         .HasForeignKey("EPreguntaIdPregunta");
                 });
 
-            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.EPregunta", b =>
+            modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Pregunta", b =>
                 {
                     b.Navigation("Respuestas");
                 });

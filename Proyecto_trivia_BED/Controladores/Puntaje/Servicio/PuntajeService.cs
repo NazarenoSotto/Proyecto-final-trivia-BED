@@ -1,9 +1,8 @@
 ﻿using Proyecto_trivia_BED.ContextoDB.Entidad;
 using Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO;
-using Proyecto_trivia_BED.Controladores.Puntaje.Modelo;
 using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
+using Proyecto_trivia_BED.Repository;
 using System;
-using Proyecto_trivia_BED.Controladores.CUsuario.Modelo;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,29 +14,31 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
     /// </summary>
     public class PuntajeService : IPuntajeService
     {
-        private readonly PuntajeModelo _puntajeModelo;
-        private readonly IUsuarioService _usuarioServicio;
+        private readonly IEntityRepository<ContextoDB.Entidad.Puntaje> _puntajeRepositorio;
+        private readonly IEntityRepository<Usuario> _usuarioRepositorio;
+
         /// <summary>
         /// Constructor de PuntajeService
         /// </summary>
-        /// <param name="puntajeModelo">PuntajeModelo</param>
-        /// <param name="usuarioServicio">IUsuarioService</param>
-        public PuntajeService(PuntajeModelo puntajeModelo, IUsuarioService usuarioServicio)
+        /// <param name="puntajeRepositorio">Repositorio de puntajes</param>
+        /// <param name="usuarioRepositorio">Repositorio de usuarios</param>
+        public PuntajeService(IEntityRepository<ContextoDB.Entidad.Puntaje> puntajeRepositorio, IEntityRepository<Usuario> usuarioRepositorio)
         {
-            _puntajeModelo = puntajeModelo ?? throw new ArgumentNullException(nameof(puntajeModelo));
-            _usuarioServicio = usuarioServicio ?? throw new ArgumentNullException(nameof(usuarioServicio));
+            _puntajeRepositorio = puntajeRepositorio ?? throw new ArgumentNullException(nameof(puntajeRepositorio));
+            _usuarioRepositorio = usuarioRepositorio ?? throw new ArgumentNullException(nameof(usuarioRepositorio));
         }
 
         /// <summary>
         /// Calcular el puntaje del usuario
         /// </summary>
-        /// <param name="request">CalculoPuntajeDTO</param>
+        /// <param name="request">Datos necesarios para calcular el puntaje</param>
         /// <returns>PuntajeDTO</returns>
-        public PuntajeDTO CalcularPuntaje(CalculoPuntajeDTO request)
+        public async Task<PuntajeDTO> CalcularPuntaje(CalculoPuntajeDTO request)
         {
             if (request.PreguntasEvaluadas == null || !request.PreguntasEvaluadas.Any())
                 throw new ArgumentException("No hay preguntas evaluadas.");
 
+            // Factores de cálculo
             var dificultad = request.PreguntasEvaluadas.First().Dificultad;
             float factorDificultad = dificultad.Valor;
 
@@ -52,29 +53,38 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
                 _ => 1f
             };
 
+            // Calcular puntaje
             float valorPuntaje = ((float)cantCorrectas / cantPreguntas) * factorDificultad * factorTiempo;
 
-            var puntajeEntidad = new EPuntaje
+            // Obtener usuario
+            var usuario = await _usuarioRepositorio.GetByIdAsync(request.Usuario.IdUsuario);
+            if (usuario == null)
+                throw new InvalidOperationException("Usuario no encontrado.");
+
+            // Crear entidad de puntaje
+            var puntajeEntidad = new ContextoDB.Entidad.Puntaje
             {
-                Usuario = _usuarioServicio.ObtenerUsuarioPorId(request.Usuario.IdUsuario),
+                Usuario = usuario,
                 ValorPuntaje = valorPuntaje,
                 Fecha = DateTime.Now,
                 Tiempo = request.Tiempo
             };
 
-            var puntajeGuardado = _puntajeModelo.GuardarPuntaje(puntajeEntidad);
+            await _puntajeRepositorio.CreateAsync(puntajeEntidad);
+            await _puntajeRepositorio.SaveChangesAsync();
 
+            // Convertir a DTO
             return new PuntajeDTO
             {
-                IdPuntaje = puntajeGuardado.IdPuntaje,
+                IdPuntaje = puntajeEntidad.IdPuntaje,
                 Usuario = new UsuarioDTO
                 {
-                    IdUsuario = puntajeGuardado.Usuario.IdUsuario,
-                    NombreUsuario = puntajeGuardado.Usuario.NombreUsuario
+                    IdUsuario = usuario.IdUsuario,
+                    NombreUsuario = usuario.NombreUsuario
                 },
-                ValorPuntaje = puntajeGuardado.ValorPuntaje,
-                Fecha = puntajeGuardado.Fecha,
-                Tiempo = puntajeGuardado.Tiempo,
+                ValorPuntaje = valorPuntaje,
+                Fecha = puntajeEntidad.Fecha,
+                Tiempo = puntajeEntidad.Tiempo,
                 CantidadPreguntas = cantPreguntas,
                 CantidadCorrectas = cantCorrectas
             };
@@ -86,24 +96,22 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
         /// <returns>Lista de PuntajeDTO</returns>
         public async Task<List<PuntajeDTO>> ObtenerTodosLosPuntajes()
         {
-            var puntajes = await _puntajeModelo.ObtenerTodosLosPuntajes();
-            var puntajeDTOs = new List<PuntajeDTO>();
-            foreach (var puntaje in puntajes)
-            {
-                puntajeDTOs.Add(new PuntajeDTO
+            var puntajes = await _puntajeRepositorio.GetAllAsync();
+
+            return puntajes
+                .Select(p => new PuntajeDTO
                 {
-                    IdPuntaje = puntaje.IdPuntaje,
+                    IdPuntaje = p.IdPuntaje,
                     Usuario = new UsuarioDTO
                     {
-                        IdUsuario = puntaje.Usuario.IdUsuario,
-                        NombreUsuario = puntaje.Usuario.NombreUsuario
+                        IdUsuario = p.Usuario.IdUsuario,
+                        NombreUsuario = p.Usuario.NombreUsuario
                     },
-                    ValorPuntaje = puntaje.ValorPuntaje,
-                    Fecha = puntaje.Fecha,
-                    Tiempo = puntaje.Tiempo
-                });
-            }
-            return puntajeDTOs;
+                    ValorPuntaje = p.ValorPuntaje,
+                    Fecha = p.Fecha,
+                    Tiempo = p.Tiempo
+                })
+                .ToList();
         }
     }
 }

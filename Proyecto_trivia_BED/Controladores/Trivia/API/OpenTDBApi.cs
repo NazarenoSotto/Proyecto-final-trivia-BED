@@ -58,7 +58,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
             // Agregar "category" si se proporciona un valor
             if (pCategoriaId.HasValue)
             {
-                ECategoria categoria = await _categoriaModelo.obtenerCategoriaPorIdAsync((int)pCategoriaId);
+                Categoria categoria = await _categoriaModelo.obtenerCategoriaPorIdAsync((int)pCategoriaId);
                 if (categoria != null) { 
                     parametros.Add($"category={categoria.WebId}");
                 } else
@@ -70,7 +70,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
             // Agregar "difficulty" si se proporciona un valor
             if (pDificultadId.HasValue)
             {
-                EDificultad dificultad = await _dificultadModelo.ObtenerDificultadPorId((int)pDificultadId);
+                Dificultad dificultad = await _dificultadModelo.ObtenerDificultadPorId((int)pDificultadId);
                 if (dificultad != null) {
                     parametros.Add($"difficulty={dificultad.NombreDificultad}");
                 }
@@ -90,11 +90,11 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
         /// Obtener categorías desde la  API
         /// </summary>
         /// <returns>Lista de ECategoría</returns>
-        public async Task<List<ECategoria>> ObtenerCategoriasAsync()
+        public async Task<List<Categoria>> ObtenerCategoriasAsync()
         {
             string baseEndpoint = "/api_category.php";
 
-            List<ECategoria> entityCategorias = new List<ECategoria>();
+            List<Categoria> entityCategorias = new List<Categoria>();
             try
             {
                 
@@ -107,7 +107,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
                     // Deserializar el contenido JSON en un objeto dynamic
                     OpenTDBCategoriaResponseDTO mResponseJSON = JsonConvert.DeserializeObject<OpenTDBCategoriaResponseDTO>(responseContent);
 
-                    entityCategorias = mResponseJSON.trivia_categories.Select(c => new ECategoria
+                    entityCategorias = mResponseJSON.trivia_categories.Select(c => new Categoria
                     (
                         c.name,
                         c.id,
@@ -130,7 +130,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
         /// <param name="categoriaId">Categoría de las preguntas</param>
         /// <param name="dificultadId">Dificultades de las preguntas</param>
         /// <returns>Lista de preguntas</returns>
-        public async Task<List<EPregunta>> ObtenerPreguntasAsync(int pCantidad, int? pCategoriaId, int? pDificultadId)
+        public async Task<List<Pregunta>> ObtenerPreguntasAsync(int pCantidad, int? pCategoriaId, int? pDificultadId)
         {
             string requestUrl = await GenerarUrlAsync(pCantidad, pCategoriaId, pDificultadId);
 
@@ -138,7 +138,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
 
             // Registrar la URL generada
             try {
-                List<EPregunta> lPreguntas = new List<EPregunta>();
+                List<Pregunta> lPreguntas = new List<Pregunta>();
 
                 // Se obtiene los datos de respuesta
                     HttpResponseMessage response = await _httpClient.GetAsync(requestUrl);
@@ -153,20 +153,20 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
                     foreach (OpenTDBResponseQuestionDTO bResponseItem in mResponseJSON.results)
                     {
                         String mLaPregunta = HttpUtility.HtmlDecode(bResponseItem.question.ToString());
-                        List<ERespuesta> lRespuestas = new List<ERespuesta>();
-                        ERespuesta mRespCorrecta = new ERespuesta(HttpUtility.HtmlDecode(bResponseItem.correct_answer.ToString()), true);
+                        List<Respuesta> lRespuestas = new List<Respuesta>();
+                        Respuesta mRespCorrecta = new Respuesta(HttpUtility.HtmlDecode(bResponseItem.correct_answer.ToString()), true);
                         lRespuestas.Add(mRespCorrecta);
                         foreach (var bRespInc in bResponseItem.incorrect_answers)
                         {
-                            lRespuestas.Add(new ERespuesta(HttpUtility.HtmlDecode(bRespInc.ToString()), false));
+                            lRespuestas.Add(new Respuesta(HttpUtility.HtmlDecode(bRespInc.ToString()), false));
                         }
 
                         string nombreCategoria = HttpUtility.HtmlDecode(bResponseItem.category.ToString());
-                        ECategoria categoriaPregunta = await _categoriaModelo.obtenerCategoriaPorNombreAsync(nombreCategoria, PaginasElegiblesEnum.OpenTDB);
+                        Categoria categoriaPregunta = await _categoriaModelo.obtenerCategoriaPorNombreAsync(nombreCategoria, PaginasElegiblesEnum.OpenTDB);
 
                         string nombreDificultad = HttpUtility.HtmlDecode(bResponseItem.difficulty.ToString());
-                        EDificultad dificultadPregunta = await _dificultadModelo.ObtenerDificultadPorNombreAsync(nombreDificultad, PaginasElegiblesEnum.OpenTDB);
-                        EPregunta mPregunta = new EPregunta(mLaPregunta, categoriaPregunta, dificultadPregunta, lRespuestas);
+                        Dificultad dificultadPregunta = await _dificultadModelo.ObtenerDificultadPorNombreAsync(nombreDificultad, PaginasElegiblesEnum.OpenTDB);
+                        Pregunta mPregunta = new Pregunta(mLaPregunta, categoriaPregunta, dificultadPregunta, lRespuestas);
                         lPreguntas.Add(mPregunta);
                     }
 
