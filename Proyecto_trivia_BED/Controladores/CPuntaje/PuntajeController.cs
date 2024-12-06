@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Proyecto_trivia_BED.Controllers
 {
     /// <summary>
-    /// Controlador para endpoints de puntaje (/puntaje)
+    /// Controlador para endpoints de puntaje
     /// </summary>
     [ApiController]
     [Route("[controller]")]

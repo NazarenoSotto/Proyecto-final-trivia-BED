@@ -38,6 +38,13 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
             _apiAdapter = apiAdapter ?? throw new ArgumentNullException(nameof(apiAdapter));
         }
 
+        /// <summary>
+        /// Obtiene listado de Preguntas
+        /// </summary>
+        /// <param name="categoriaId">id de la categoria</param>
+        /// <param name="dificultadId">id de la dificultad</param>
+        /// <param name="cantidad">cantidad de preguntas</param>
+        /// <returns>Lista de PreguntaDTO</returns>
         public async Task<List<PreguntaDTO>> ObtenerPreguntas(int categoriaId, int dificultadId, int cantidad)
         {
             var preguntas = await _preguntaRepositorio.GetAsync(
@@ -48,6 +55,12 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
             return preguntas.OrderBy(x => Guid.NewGuid()).Take(cantidad).Select(MapearPreguntaADTO).ToList();
         }
 
+        /// <summary>
+        /// Agregar Pregunta Manual con Respuestas
+        /// </summary>
+        /// <param name="preguntaDTO">pregunta con respuestas</param>
+        /// <returns>Bool que indica si pudo agregarse</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<bool> AgregarPreguntaManual(PreguntaDTO preguntaDTO)
         {
             var categoria = await _categoriaRepositorio.GetByIdAsync(preguntaDTO.Categoria.IdCategoria);
@@ -74,6 +87,12 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
             return true;
         }
 
+        /// <summary>
+        /// Verificar la respuesta seleccionada
+        /// </summary>
+        /// <param name="preguntaDTO">pregunta con respuestas</param>
+        /// <returns>PreguntaDTO</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<PreguntaDTO> VerificarPregunta(PreguntaDTO preguntaDTO)
         {
             var preguntas = await _preguntaRepositorio.GetAsync(where: p => p.IdPregunta == preguntaDTO.IdPregunta, includes: "Categoria,Dificultad,Respuestas");
@@ -92,6 +111,14 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
             return preguntaDTO;
         }
 
+        /// <summary>
+        /// Obtener lista de preguntas desde API web
+        /// </summary>
+        /// <param name="api">a qué API se consulta</param>
+        /// <param name="cantidad">la cantidad que se solicita</param>
+        /// <param name="categoriaId">id de la categoria</param>
+        /// <param name="dificultadId">id de la dificultad</param>
+        /// <returns>Lista de PreguntaDTO</returns>
         public async Task<List<PreguntaDTO>> ObtenerPreguntasDesdeAPIAsync(PaginasElegiblesEnum api, int cantidad, int? categoriaId, int? dificultadId)
         {
             // Obtener preguntas desde la API externa
@@ -136,7 +163,11 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
             }).ToList();
         }
 
-
+        /// <summary>
+        /// Obtener lista de categorias
+        /// </summary>
+        /// <param name="api">API que se consumirá</param>
+        /// <returns>Lista de CategoriaDTO</returns>
         public async Task<List<CategoriaDTO>> ObtenerCategorias(PaginasElegiblesEnum api)
         {
             var categorias = await _categoriaRepositorio.GetAsync(c => c.externalAPI == api);
@@ -149,11 +180,14 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
             }).ToList();
         }
 
+        /// <summary>
+        /// Obtener lista de categorias desde la web
+        /// </summary>
+        /// <param name="api">API que se consumirá</param>
+        /// <returns>Lista de CategoriaDTO</returns>
         public async Task<List<CategoriaDTO>> CargarCategoriasDesdeAPIAsync(PaginasElegiblesEnum api)
         {
             var categoriasExternas = await _apiAdapter.ObtenerCategoriasAsync();
-
-            // Obtener todas las categorías existentes del repositorio para la API específica
             var categoriasExistentes = await _categoriaRepositorio.GetAsync(c => c.externalAPI == api);
 
             // Filtrar las categorías externas para identificar las nuevas
@@ -175,13 +209,10 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
                 });
             }
 
-            // Guardar los cambios en el repositorio
             await _categoriaRepositorio.SaveChangesAsync();
 
-            // Obtener las categorías actualizadas desde la base de datos
             var categoriasActualizadas = await _categoriaRepositorio.GetAsync(c => c.externalAPI == api);
 
-            // Mapear las categorías a DTO
             return categoriasActualizadas.Select(c => new CategoriaDTO
             {
                 IdCategoria = c.IdCategoria,
@@ -190,7 +221,11 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
             }).ToList();
         }
 
-
+        /// <summary>
+        /// Obtener lista de Dificultades
+        /// </summary>
+        /// <param name="api">api que consumirá</param>
+        /// <returns>Lista de DificultadDTO</returns>
         public async Task<List<DificultadDTO>> ObtenerDificultades(PaginasElegiblesEnum api)
         {
             var dificultades = await _dificultadRepositorio.GetAsync(d => d.externalAPI == api);
@@ -203,6 +238,11 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
             }).ToList();
         }
 
+        /// <summary>
+        /// Mapea la Pregunta a DTO
+        /// </summary>
+        /// <param name="pregunta">pregunta a mapear</param>
+        /// <returns>PreguntaDTO</returns>
         private PreguntaDTO MapearPreguntaADTO(Pregunta pregunta)
         {
             return new PreguntaDTO

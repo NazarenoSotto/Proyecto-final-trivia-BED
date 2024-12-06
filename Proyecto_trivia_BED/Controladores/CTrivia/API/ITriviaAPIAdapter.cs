@@ -23,7 +23,7 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.API.DTO
         /// <summary>
         /// Obtener categorías desde la  API
         /// </summary>
-        /// <returns>Lista de ECategoría</returns>
+        /// <returns>Lista de Categoría</returns>
         public Task<List<Categoria>> ObtenerCategoriasAsync();
     }
 }

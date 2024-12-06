@@ -54,7 +54,6 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.API
                 $"amount={pCantidad}"
             };
 
-            // Agregar "category" si se proporciona un valor
             if (pCategoriaId.HasValue)
             {
                 var categoria = await _categoriaRepositorio.GetByIdAsync(pCategoriaId.Value);
@@ -68,7 +67,6 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.API
                 }
             }
 
-            // Agregar "difficulty" si se proporciona un valor
             if (pDificultadId.HasValue)
             {
                 var dificultad = await _dificultadRepositorio.GetByIdAsync(pDificultadId.Value);

@@ -37,8 +37,6 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         /// <param name="pPregunta">Texto que define a la preg</param>
         /// <param name="pCategoria">Categoría de la pregunta</param>
         /// <param name="pDif">Dificultad de la pregunta</param>
-        /// <param name="pRespIncorrectas">Lista de respuestas incorrectas</param>
-        /// <param name="pRespCorrecta">La respuesta correcta</param>
         public Pregunta(string pPregunta, Categoria pCategoria, Dificultad pDif, IList<Respuesta> pRespuestas)
         {
             LaPregunta = pPregunta;

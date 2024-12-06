@@ -28,7 +28,7 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         public PaginasElegiblesEnum externalAPI { get; set; }
 
         /// <summary>
-        /// Crear una nueva instancia de ECategoría
+        /// Crear una nueva instancia de Categoría
         /// </summary>
         /// <param name="pNombre">Nombre de la categoría</param>
         /// <param name="pWebId">Identificación externa de su respectiva web</param>
@@ -41,11 +41,9 @@ namespace Proyecto_trivia_BED.ContextoDB.Entidad
         }
 
         /// <summary>
-        /// Crear una nueva instancia de ECategoría con sólo el nombre
+        /// Crear una nueva instancia de Categoría con sólo el nombre
         /// </summary>
         /// <param name="pNombre">Nombre de la categoría</param>
-        /// <param name="WebId">Identificación externa de su respectiva web</param>
-        /// <param name="externalApi">Enumerable que representa la web externa de la categoría</param>
         public Categoria(string pNombre)
         {
             NombreCategoria = pNombre;
