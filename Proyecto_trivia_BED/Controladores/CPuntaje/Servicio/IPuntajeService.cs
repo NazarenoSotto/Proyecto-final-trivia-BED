@@ -1,8 +1,8 @@
-﻿using Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO;
+﻿using Proyecto_trivia_BED.Controladores.CPuntaje.Modelo.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
+namespace Proyecto_trivia_BED.Controladores.CPuntaje.Servicio
 {
     /// <summary>
     /// Interfaz de servicio para funcionalidades relacionadas con puntajes

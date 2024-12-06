@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO;
-using Proyecto_trivia_BED.Controladores.Puntaje.Servicio;
+using Proyecto_trivia_BED.Controladores.CPuntaje.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CPuntaje.Servicio;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

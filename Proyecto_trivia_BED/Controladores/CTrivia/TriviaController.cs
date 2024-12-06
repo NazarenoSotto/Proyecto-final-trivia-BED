@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Proyecto_trivia_BED.ContextoDB.Entidad;
-using Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO;
-using Proyecto_trivia_BED.Controladores.Trivia.Servicio;
+using Proyecto_trivia_BED.Controladores.CTrivia.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CTrivia.Servicio;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

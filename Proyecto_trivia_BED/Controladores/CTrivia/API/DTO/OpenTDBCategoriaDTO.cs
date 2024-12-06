@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Proyecto_trivia_BED.Controladores.Trivia.API.DTO
+namespace Proyecto_trivia_BED.Controladores.CTrivia.API.DTO
 {
     /// <summary>
     /// DTO de la respuesta recibida al consultar categorías en OpenTDB

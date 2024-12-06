@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Proyecto_trivia_BED.ContextoDB.Entidad;
-using Proyecto_trivia_BED.Controladores.Trivia.API.DTO;
+using Proyecto_trivia_BED.Controladores.CTrivia.API.DTO;
 using Proyecto_trivia_BED.Repository;
 using System;
 using System.Collections.Generic;
@@ -10,10 +10,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using static Proyecto_trivia_BED.Controladores.Trivia.API.DTO.OpenTDBCategoriaResponseDTO;
-using static Proyecto_trivia_BED.Controladores.Trivia.API.DTO.OpenTDBResponseDTO;
+using static Proyecto_trivia_BED.Controladores.CTrivia.API.DTO.OpenTDBCategoriaResponseDTO;
+using static Proyecto_trivia_BED.Controladores.CTrivia.API.DTO.OpenTDBResponseDTO;
 
-namespace Proyecto_trivia_BED.Controladores.Trivia.API
+namespace Proyecto_trivia_BED.Controladores.CTrivia.API
 {
     /// <summary>
     /// Adapter para utilizar la API de OpenTDB

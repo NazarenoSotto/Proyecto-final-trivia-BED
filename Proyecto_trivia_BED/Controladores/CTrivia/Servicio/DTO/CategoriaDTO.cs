@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO
+namespace Proyecto_trivia_BED.Controladores.CTrivia.Modelo.DTO
 {
     /// <summary>
     /// DTO de Categoría

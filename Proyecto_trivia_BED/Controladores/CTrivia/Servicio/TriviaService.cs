@@ -1,13 +1,13 @@
 ﻿using Proyecto_trivia_BED.ContextoDB.Entidad;
-using Proyecto_trivia_BED.Controladores.Trivia.API.DTO;
-using Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CTrivia.API.DTO;
+using Proyecto_trivia_BED.Controladores.CTrivia.Modelo.DTO;
 using Proyecto_trivia_BED.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
+namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
 {
     /// <summary>
     /// Servicio para las funcionalidades de trivia
@@ -99,7 +99,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
 
             foreach (var preguntaExterna in preguntasExternas)
             {
-                //// Buscar si la pregunta ya existe en la base de datos
+                // Buscar si la pregunta ya existe en la base de datos
                 var preguntaExistente = (await _preguntaRepositorio.GetAsync(
                     where: p => p.LaPregunta == preguntaExterna.LaPregunta &&
                                 p.Categoria.IdCategoria == preguntaExterna.Categoria.IdCategoria &&
@@ -113,10 +113,8 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 }
             }
 
-            // Guardar cambios en la base de datos
             await _preguntaRepositorio.SaveChangesAsync();
 
-            // Mapear las preguntas externas a DTO para la respuesta
             return preguntasExternas.Select(p => new PreguntaDTO
             {
                 LaPregunta = p.LaPregunta,

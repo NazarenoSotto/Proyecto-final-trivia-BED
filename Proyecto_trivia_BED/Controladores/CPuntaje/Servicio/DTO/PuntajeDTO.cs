@@ -1,7 +1,7 @@
 ﻿using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
 using System;
 
-namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO
+namespace Proyecto_trivia_BED.Controladores.CPuntaje.Modelo.DTO
 {
     /// <summary>
     /// DTO de Puntaje

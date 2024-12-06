@@ -1,5 +1,5 @@
 ﻿using Proyecto_trivia_BED.ContextoDB.Entidad;
-using Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CPuntaje.Modelo.DTO;
 using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
 using Proyecto_trivia_BED.Repository;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
+namespace Proyecto_trivia_BED.Controladores.CPuntaje.Servicio
 {
     /// <summary>
     /// Servicio para las funcionalidades de puntaje

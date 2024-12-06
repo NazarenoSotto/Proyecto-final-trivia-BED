@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CTrivia.Modelo.DTO;
 using Proyecto_trivia_BED.Controladores.CUsuario.Modelo.DTO;
 
-namespace Proyecto_trivia_BED.Controladores.Puntaje.Modelo.DTO
+namespace Proyecto_trivia_BED.Controladores.CPuntaje.Modelo.DTO
 {
     /// <summary>
     /// DTO para la respuesta del cálculo de puntaje

@@ -1,4 +1,4 @@
-﻿namespace Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO
+﻿namespace Proyecto_trivia_BED.Controladores.CTrivia.Modelo.DTO
 {
     /// <summary>
     /// DTO que representa los parámetros necesarios para obtener preguntas

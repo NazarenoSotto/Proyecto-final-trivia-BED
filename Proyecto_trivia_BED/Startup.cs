@@ -10,12 +10,12 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_trivia_BED.ContextoDB;
 using Proyecto_trivia_BED.Controladores.CUsuario.Modelo;
-using Proyecto_trivia_BED.Controladores.Puntaje.Modelo;
-using Proyecto_trivia_BED.Controladores.Puntaje.Servicio;
-using Proyecto_trivia_BED.Controladores.Trivia.Modelo;
-using Proyecto_trivia_BED.Controladores.Trivia.Servicio;
-using Proyecto_trivia_BED.Controladores.Trivia.API.DTO;
-using Proyecto_trivia_BED.Controladores.Trivia.API;
+using Proyecto_trivia_BED.Controladores.CPuntaje.Modelo;
+using Proyecto_trivia_BED.Controladores.CPuntaje.Servicio;
+using Proyecto_trivia_BED.Controladores.CTrivia.Modelo;
+using Proyecto_trivia_BED.Controladores.CTrivia.Servicio;
+using Proyecto_trivia_BED.Controladores.CTrivia.API.DTO;
+using Proyecto_trivia_BED.Controladores.CTrivia.API;
 using Proyecto_trivia_BED.Repository;
 
 namespace Proyecto_trivia_BED
@@ -45,13 +45,8 @@ namespace Proyecto_trivia_BED
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped(typeof(IEntityRepository<>), typeof(EntityRepository<>));
-            services.AddScoped<UsuarioModelo>();
             services.AddScoped<IUsuarioService, UsuarioService>();
-            services.AddScoped<PuntajeModelo>();
             services.AddScoped<IPuntajeService, PuntajeService>();
-            services.AddScoped<CategoriaModelo>();
-            services.AddScoped<DificultadModelo>();
-            services.AddScoped<PreguntaModelo>();
             services.AddScoped<ITriviaAPIAdapter, OpenTDBAPI>();
             services.AddScoped<ITriviaService, TriviaService>();
             

@@ -1,9 +1,9 @@
 ﻿using Proyecto_trivia_BED.ContextoDB.Entidad;
-using Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO;
+using Proyecto_trivia_BED.Controladores.CTrivia.Modelo.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
+namespace Proyecto_trivia_BED.Controladores.CTrivia.Servicio
 {
     /// <summary>
     /// Interfaz de servicio para funcionalidades relacionadas con trivia
