@@ -95,7 +95,7 @@ namespace Proyecto_trivia_BED.Controladores.CPuntaje.Servicio
         /// <returns>Lista de PuntajeDTO</returns>
         public async Task<List<PuntajeDTO>> ObtenerTodosLosPuntajes()
         {
-            var puntajes = await _puntajeRepositorio.GetAsync(includes:"Usuario");
+            var puntajes = await _puntajeRepositorio.GetAsync(orderBy: q => q.OrderByDescending(p => p.ValorPuntaje),includes:"Usuario");
 
             return puntajes
                 .Select(p => new PuntajeDTO
