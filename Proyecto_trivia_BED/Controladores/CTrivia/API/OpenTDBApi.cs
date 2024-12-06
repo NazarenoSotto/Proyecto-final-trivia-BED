@@ -112,9 +112,9 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.API
 
                 return entityCategorias;
             }
-            catch
+            catch (HttpRequestException httpEx)
             {
-                throw;
+                throw new Exception("Hubo un problema al conectar con OpenTDB.", httpEx);
             }
         }
 
@@ -166,9 +166,9 @@ namespace Proyecto_trivia_BED.Controladores.CTrivia.API
 
                 return lPreguntas;
             }
-            catch
+            catch (HttpRequestException httpEx)
             {
-                throw;
+                throw new Exception("Hubo un problema al conectar con OpenTDB.", httpEx);
             }
         }
     }
