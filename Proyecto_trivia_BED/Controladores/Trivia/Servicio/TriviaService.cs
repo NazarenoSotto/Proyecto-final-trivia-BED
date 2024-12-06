@@ -45,7 +45,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 includes: "Categoria,Dificultad,Respuestas"
             );
 
-            return preguntas.Take(cantidad).Select(MapearPreguntaADTO).ToList();
+            return preguntas.OrderBy(x => Guid.NewGuid()).Take(cantidad).Select(MapearPreguntaADTO).ToList();
         }
 
         public async Task<bool> AgregarPreguntaManual(PreguntaDTO preguntaDTO)
@@ -219,7 +219,8 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
                 Dificultad = new DificultadDTO
                 {
                     IdDificultad = pregunta.Dificultad.IdDificultad,
-                    NombreDificultad = pregunta.Dificultad.NombreDificultad
+                    NombreDificultad = pregunta.Dificultad.NombreDificultad,
+                    Valor = pregunta.Dificultad.Valor,
                 },
                 Respuestas = pregunta.Respuestas.Select(r => new RespuestaDTO
                 {

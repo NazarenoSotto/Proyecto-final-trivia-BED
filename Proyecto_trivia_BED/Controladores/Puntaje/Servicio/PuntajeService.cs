@@ -38,7 +38,6 @@ namespace Proyecto_trivia_BED.Controladores.Puntaje.Servicio
             if (request.PreguntasEvaluadas == null || !request.PreguntasEvaluadas.Any())
                 throw new ArgumentException("No hay preguntas evaluadas.");
 
-            // Factores de cálculo
             var dificultad = request.PreguntasEvaluadas.First().Dificultad;
             float factorDificultad = dificultad.Valor;
 
