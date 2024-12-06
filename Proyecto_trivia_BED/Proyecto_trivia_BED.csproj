@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Controladores\Trivia\Modelo\DTO\RespuestaDTO.cs" />
+    <None Include="Controladores\CTrivia\Servicio\DTO\RespuestaDTO.cs" />
   </ItemGroup>
 
 </Project>

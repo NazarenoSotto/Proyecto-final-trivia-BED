@@ -10,8 +10,8 @@ using Proyecto_trivia_BED.ContextoDB;
 namespace Proyecto_trivia_BED.Migrations
 {
     [DbContext(typeof(TriviaContext))]
-    [Migration("20241117033913_agregadosCamposCategoria")]
-    partial class agregadosCamposCategoria
+    [Migration("20241205234444_FixDatabase")]
+    partial class FixDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -153,7 +153,7 @@ namespace Proyecto_trivia_BED.Migrations
                     b.Property<bool>("Correcta")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("EPreguntaIdPregunta")
+                    b.Property<int?>("PreguntaIdPregunta")
                         .HasColumnType("int");
 
                     b.Property<string>("SRespuesta")
@@ -161,7 +161,7 @@ namespace Proyecto_trivia_BED.Migrations
 
                     b.HasKey("IdRespuesta");
 
-                    b.HasIndex("EPreguntaIdPregunta");
+                    b.HasIndex("PreguntaIdPregunta");
 
                     b.ToTable("Respuestas");
                 });
@@ -215,7 +215,7 @@ namespace Proyecto_trivia_BED.Migrations
                 {
                     b.HasOne("Proyecto_trivia_BED.ContextoDB.Entidad.Pregunta", null)
                         .WithMany("Respuestas")
-                        .HasForeignKey("EPreguntaIdPregunta");
+                        .HasForeignKey("PreguntaIdPregunta");
                 });
 
             modelBuilder.Entity("Proyecto_trivia_BED.ContextoDB.Entidad.Pregunta", b =>
