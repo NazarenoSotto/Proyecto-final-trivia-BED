@@ -2,13 +2,10 @@
 using Newtonsoft.Json;
 using Proyecto_trivia_BED.ContextoDB.Entidad;
 using Proyecto_trivia_BED.Controladores.Trivia.API.DTO;
-using Proyecto_trivia_BED.Controladores.Trivia.Modelo;
-using Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO;
+using Proyecto_trivia_BED.Repository;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,96 +20,96 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
     /// </summary>
     public class OpenTDBAPI : ITriviaAPIAdapter
     {
-        private static HttpClient _httpClient;
-        private static CategoriaModelo _categoriaModelo;
-        private static DificultadModelo _dificultadModelo;
+        private readonly HttpClient _httpClient;
+        private readonly IEntityRepository<Categoria> _categoriaRepositorio;
+        private readonly IEntityRepository<Dificultad> _dificultadRepositorio;
 
         /// <summary>
         /// Constructor de OpenTDBAPI
         /// </summary>
         /// <param name="configuration">IConfiguration</param>
-        /// <param name="categoriaModelo">CategoriaModelo</param>
-        /// <param name="dificultadModelo">DificultadModelo</param>
-        public OpenTDBAPI(IConfiguration configuration, CategoriaModelo categoriaModelo, DificultadModelo dificultadModelo)
+        /// <param name="categoriaRepositorio">Repositorio de Categorias</param>
+        /// <param name="dificultadRepositorio">Repositorio de Dificultades</param>
+        public OpenTDBAPI(
+            IConfiguration configuration,
+            IEntityRepository<Categoria> categoriaRepositorio,
+            IEntityRepository<Dificultad> dificultadRepositorio)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(configuration.GetValue<string>("externalApiUrl:OpenTDBUrl"));
-            _categoriaModelo = categoriaModelo;
-            _dificultadModelo = dificultadModelo;
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(configuration.GetValue<string>("externalApiUrl:OpenTDBUrl"))
+            };
+            _categoriaRepositorio = categoriaRepositorio ?? throw new ArgumentNullException(nameof(categoriaRepositorio));
+            _dificultadRepositorio = dificultadRepositorio ?? throw new ArgumentNullException(nameof(dificultadRepositorio));
         }
 
         /// <summary>
-        /// Genera la url para obtener las preguntas con los parámetros requeridos
+        /// Genera la URL para obtener las preguntas con los parámetros requeridos
         /// </summary>
-        /// <param name="pCantidad">Cantidad de preguntas</param>
-        /// <param name="pCategoriaId">Id de categoría de las preguntas</param>
-        /// <param name="pDificultadId">Id de dificultad</param>
-        /// <returns>string</returns>
-        private static async Task<string> GenerarUrlAsync(int pCantidad, int? pCategoriaId, int? pDificultadId)
+        private async Task<string> GenerarUrlAsync(int pCantidad, int? pCategoriaId, int? pDificultadId)
         {
             string baseEndpoint = "/api.php?";
-            List<string> parametros = new List<string>();
-
-            parametros.Add($"amount={pCantidad}");
+            List<string> parametros = new List<string>
+            {
+                $"amount={pCantidad}"
+            };
 
             // Agregar "category" si se proporciona un valor
             if (pCategoriaId.HasValue)
             {
-                Categoria categoria = await _categoriaModelo.obtenerCategoriaPorIdAsync((int)pCategoriaId);
-                if (categoria != null) { 
-                    parametros.Add($"category={categoria.WebId}");
-                } else
+                var categoria = await _categoriaRepositorio.GetByIdAsync(pCategoriaId.Value);
+                if (categoria != null)
                 {
-                    throw new ArgumentException("No se encontró la categoría requerida");
+                    parametros.Add($"category={categoria.WebId}");
+                }
+                else
+                {
+                    throw new ArgumentException("No se encontró la categoría requerida.");
                 }
             }
 
             // Agregar "difficulty" si se proporciona un valor
             if (pDificultadId.HasValue)
             {
-                Dificultad dificultad = await _dificultadModelo.ObtenerDificultadPorId((int)pDificultadId);
-                if (dificultad != null) {
+                var dificultad = await _dificultadRepositorio.GetByIdAsync(pDificultadId.Value);
+                if (dificultad != null)
+                {
                     parametros.Add($"difficulty={dificultad.NombreDificultad}");
                 }
                 else
                 {
-                    throw new ArgumentException("No se encontró la dificultad requerida");
+                    throw new ArgumentException("No se encontró la dificultad requerida.");
                 }
             }
 
             parametros.Add("type=multiple");
 
-            // Combinar la base de la URL con los parámetros usando '&' como separador
             return $"{baseEndpoint}{string.Join("&", parametros)}";
         }
 
         /// <summary>
-        /// Obtener categorías desde la  API
+        /// Obtener categorías desde la API
         /// </summary>
-        /// <returns>Lista de ECategoría</returns>
         public async Task<List<Categoria>> ObtenerCategoriasAsync()
         {
             string baseEndpoint = "/api_category.php";
-
             List<Categoria> entityCategorias = new List<Categoria>();
+
             try
             {
-                
-                // Se obtiene los datos de categorias
                 HttpResponseMessage response = await _httpClient.GetAsync(baseEndpoint);
 
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
-                    // Deserializar el contenido JSON en un objeto dynamic
-                    OpenTDBCategoriaResponseDTO mResponseJSON = JsonConvert.DeserializeObject<OpenTDBCategoriaResponseDTO>(responseContent);
+                    var mResponseJSON = JsonConvert.DeserializeObject<OpenTDBCategoriaResponseDTO>(responseContent);
 
                     entityCategorias = mResponseJSON.trivia_categories.Select(c => new Categoria
-                    (
-                        c.name,
-                        c.id,
-                        PaginasElegiblesEnum.OpenTDB
-                    )).ToList();
+                    {
+                        NombreCategoria = c.name,
+                        WebId = c.id,
+                        externalAPI = PaginasElegiblesEnum.OpenTDB
+                    }).ToList();
                 }
 
                 return entityCategorias;
@@ -126,51 +123,49 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
         /// <summary>
         /// Obtener preguntas desde la API
         /// </summary>
-        /// <param name="cantidad">Cantidad de preguntas a obtener</param>
-        /// <param name="categoriaId">Categoría de las preguntas</param>
-        /// <param name="dificultadId">Dificultades de las preguntas</param>
-        /// <returns>Lista de preguntas</returns>
         public async Task<List<Pregunta>> ObtenerPreguntasAsync(int pCantidad, int? pCategoriaId, int? pDificultadId)
         {
             string requestUrl = await GenerarUrlAsync(pCantidad, pCategoriaId, pDificultadId);
+            List<Pregunta> lPreguntas = new List<Pregunta>();
 
-            string fullUrl = new Uri(_httpClient.BaseAddress, requestUrl).ToString();
-
-            // Registrar la URL generada
-            try {
-                List<Pregunta> lPreguntas = new List<Pregunta>();
-
-                // Se obtiene los datos de respuesta
-                    HttpResponseMessage response = await _httpClient.GetAsync(requestUrl);
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync(requestUrl);
 
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
+                    var mResponseJSON = JsonConvert.DeserializeObject<OpenTDBResponseDTO>(responseContent);
 
-                    // Deserializar el contenido JSON en un objeto dynamic
-                    OpenTDBResponseDTO mResponseJSON = JsonConvert.DeserializeObject<OpenTDBResponseDTO>(responseContent);
-
-                    foreach (OpenTDBResponseQuestionDTO bResponseItem in mResponseJSON.results)
+                    foreach (var bResponseItem in mResponseJSON.results)
                     {
-                        String mLaPregunta = HttpUtility.HtmlDecode(bResponseItem.question.ToString());
-                        List<Respuesta> lRespuestas = new List<Respuesta>();
-                        Respuesta mRespCorrecta = new Respuesta(HttpUtility.HtmlDecode(bResponseItem.correct_answer.ToString()), true);
-                        lRespuestas.Add(mRespCorrecta);
-                        foreach (var bRespInc in bResponseItem.incorrect_answers)
+                        string decodedQuestion = HttpUtility.HtmlDecode(bResponseItem.question);
+                        List<Respuesta> respuestas = new List<Respuesta>
                         {
-                            lRespuestas.Add(new Respuesta(HttpUtility.HtmlDecode(bRespInc.ToString()), false));
-                        }
+                            new Respuesta { SRespuesta = HttpUtility.HtmlDecode(bResponseItem.correct_answer), Correcta = true }
+                        };
 
-                        string nombreCategoria = HttpUtility.HtmlDecode(bResponseItem.category.ToString());
-                        Categoria categoriaPregunta = await _categoriaModelo.obtenerCategoriaPorNombreAsync(nombreCategoria, PaginasElegiblesEnum.OpenTDB);
+                        respuestas.AddRange(bResponseItem.incorrect_answers.Select(incorrect => new Respuesta
+                        {
+                            SRespuesta = HttpUtility.HtmlDecode(incorrect),
+                            Correcta = false
+                        }));
 
-                        string nombreDificultad = HttpUtility.HtmlDecode(bResponseItem.difficulty.ToString());
-                        Dificultad dificultadPregunta = await _dificultadModelo.ObtenerDificultadPorNombreAsync(nombreDificultad, PaginasElegiblesEnum.OpenTDB);
-                        Pregunta mPregunta = new Pregunta(mLaPregunta, categoriaPregunta, dificultadPregunta, lRespuestas);
-                        lPreguntas.Add(mPregunta);
+                        var categoria = await _categoriaRepositorio.GetAsync(c => c.NombreCategoria == HttpUtility.HtmlDecode(bResponseItem.category) &&
+                            c.externalAPI == PaginasElegiblesEnum.OpenTDB);
+                        var dificultad = await _dificultadRepositorio.GetAsync(d => d.NombreDificultad == HttpUtility.HtmlDecode(bResponseItem.difficulty) &&
+                            d.externalAPI == PaginasElegiblesEnum.OpenTDB);
+
+                        lPreguntas.Add(new Pregunta
+                        {
+                            LaPregunta = decodedQuestion,
+                            Categoria = categoria.FirstOrDefault(),
+                            Dificultad = dificultad.FirstOrDefault(),
+                            Respuestas = respuestas
+                        });
                     }
-
                 }
+
                 return lPreguntas;
             }
             catch
@@ -178,6 +173,5 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.API
                 throw;
             }
         }
-
     }
 }

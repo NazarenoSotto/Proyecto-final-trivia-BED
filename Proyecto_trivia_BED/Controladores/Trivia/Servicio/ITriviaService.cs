@@ -1,4 +1,5 @@
-﻿using Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO;
+﻿using Proyecto_trivia_BED.ContextoDB.Entidad;
+using Proyecto_trivia_BED.Controladores.Trivia.Modelo.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
         /// </summary>
         /// <param name="preguntaDTO">Pregunta a guardar</param>
         /// <returns>Booleano</returns>
-        Task<bool> GuardarPreguntaManual(PreguntaDTO preguntaDTO);
+        Task<bool> AgregarPreguntaManual(PreguntaDTO preguntaDTO);
 
         /// <summary>
         /// Verificar pregunta y sus respuestas
@@ -31,5 +32,36 @@ namespace Proyecto_trivia_BED.Controladores.Trivia.Servicio
         /// <param name="preguntaDTO">Pregunta a verificar</param>
         /// <returns>PreguntaDTO</returns>
         Task<PreguntaDTO> VerificarPregunta(PreguntaDTO preguntaDTO);
+
+        /// <summary>
+        /// Obtener preguntas desde la API externa
+        /// </summary>
+        /// <param name="api">Enum de API externa</param>
+        /// <param name="cantidad">Cantidad de preguntas</param>
+        /// <param name="categoriaId">Id de categoría</param>
+        /// <param name="dificultadId">Id de dificultad</param>
+        /// <returns>Lista de PreguntaDTO</returns>
+        Task<List<PreguntaDTO>> ObtenerPreguntasDesdeAPIAsync(PaginasElegiblesEnum api, int cantidad, int? categoriaId, int? dificultadId);
+
+        /// <summary>
+        /// Obtener lista de categorías desde la base de datos
+        /// </summary>
+        /// <param name="api">Enum de API externa</param>
+        /// <returns>Lista de CategoriaDTO</returns>
+        Task<List<CategoriaDTO>> ObtenerCategorias(PaginasElegiblesEnum api);
+
+        /// <summary>
+        /// Cargar categorías desde la API externa
+        /// </summary>
+        /// <param name="api">Enum de API externa</param>
+        /// <returns>Lista de CategoriaDTO</returns>
+        Task<List<CategoriaDTO>> CargarCategoriasDesdeAPIAsync(PaginasElegiblesEnum api);
+
+        /// <summary>
+        /// Obtener lista de dificultades desde la base de datos
+        /// </summary>
+        /// <param name="api">Enum de API externa</param>
+        /// <returns>Lista de DificultadDTO</returns>
+        Task<List<DificultadDTO>> ObtenerDificultades(PaginasElegiblesEnum api);
     }
 }

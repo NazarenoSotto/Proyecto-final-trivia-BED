@@ -47,6 +47,42 @@ namespace Proyecto_trivia_BED.Controladores.CUsuario.Modelo
         }
 
         /// <summary>
+        /// Convertir usuario entidad a usuario DTO
+        /// </summary>
+        /// <param name="usuario">Usuario entidad a convertir</param>
+        /// <returns>UsuarioDTO</returns>
+        private UsuarioDTO ConvertirADTO(Usuario usuario)
+        {
+            if (usuario == null) return null;
+
+            return new UsuarioDTO
+            {
+                IdUsuario = usuario.IdUsuario,
+                NombreUsuario = usuario.NombreUsuario,
+                EsAdmin = usuario.EsAdmin,
+                Password = usuario.Password
+            };
+        }
+
+        /// <summary>
+        /// Convertir usuario DTO a usuario entidad
+        /// </summary>
+        /// <param name="usuarioDTO">Usuario DTO a convertir</param>
+        /// <returns>Usuario</returns>
+        private Usuario ConvertirAEntidad(UsuarioDTO usuarioDTO)
+        {
+            if (usuarioDTO == null) return null;
+
+            return new Usuario
+            {
+                IdUsuario = usuarioDTO.IdUsuario,
+                NombreUsuario = usuarioDTO.NombreUsuario,
+                EsAdmin = usuarioDTO.EsAdmin,
+                Password = usuarioDTO.Password
+            };
+        }
+
+        /// <summary>
         /// Verifica si el nombre del usuario ya existe
         /// </summary>
         /// <param name="nombreUsuario">Nombre del usuario</param>
@@ -88,42 +124,6 @@ namespace Proyecto_trivia_BED.Controladores.CUsuario.Modelo
                 return null;
 
             return ConvertirADTO(usuarioEntidad);
-        }
-
-        /// <summary>
-        /// Convertir usuario entidad a usuario DTO
-        /// </summary>
-        /// <param name="usuario">Usuario entidad a convertir</param>
-        /// <returns>UsuarioDTO</returns>
-        private UsuarioDTO ConvertirADTO(Usuario usuario)
-        {
-            if (usuario == null) return null;
-
-            return new UsuarioDTO
-            {
-                IdUsuario = usuario.IdUsuario,
-                NombreUsuario = usuario.NombreUsuario,
-                EsAdmin = usuario.EsAdmin,
-                Password = usuario.Password
-            };
-        }
-
-        /// <summary>
-        /// Convertir usuario DTO a usuario entidad
-        /// </summary>
-        /// <param name="usuarioDTO">Usuario DTO a convertir</param>
-        /// <returns>Usuario</returns>
-        private Usuario ConvertirAEntidad(UsuarioDTO usuarioDTO)
-        {
-            if (usuarioDTO == null) return null;
-
-            return new Usuario
-            {
-                IdUsuario = usuarioDTO.IdUsuario,
-                NombreUsuario = usuarioDTO.NombreUsuario,
-                EsAdmin = usuarioDTO.EsAdmin,
-                Password = usuarioDTO.Password
-            };
         }
     }
 }
